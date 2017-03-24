@@ -1,8 +1,8 @@
 <?php 
-    require_once ("session.php");
-    require_once ("simplecms-config-sample.php"); 
-    require_once ("connectDB.php");
-    include ("header.php");
+    require_once ("Includes/session.php");
+    require_once ("Includes/simplecms-config-sample.php"); 
+    require_once ("Includes/connectDB.php");
+    include ("Includes/header.php");
 
     if (isset($_POST['submit']))
     {
