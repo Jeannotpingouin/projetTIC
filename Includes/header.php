@@ -1,76 +1,55 @@
 <?php require_once ("Includes/session.php"); ?>
 <!DOCTYPE html>
 <html lang="en">
-     <head>
-      <!--Import Google Icon Font-->
-      <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-      <!--Import materialize.css-->
-      <link type="text/css" rel="stylesheet" href="bower_components/materialize/dist/css/materialize.min.css"  media="screen,projection"/>
-      <!--Let browser know website is optimized for mobile-->
-      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-      
-    </head>
-    <body>
-        <div class="container">
-        <header>
-                        <?php
-                        if (logged_on())
-                        {
-                            echo '<li><a href="/logoff.php">Sign out</a></li>' . "\n";
-                            if (is_admin())
-                            {
-                                /*
-                                echo '<li><a href="/addpage.php">Add</a></li>' . "\n";
-                                echo '<li><a href="/selectpagetoedit.php">Edit</a></li>' . "\n";
-                                echo '<li><a href="/deletepage.php">Delete</a></li>' . "\n";
-                                */                           
-                            }
-                        }
-                        else
-                        {
-                            echo '<li><a href="/logon.php">Login</a></li>' . "\n";
-                            echo '<li><a href="/register.php">Register</a></li>' . "\n";
-                        }
-                        ?>
-                        </ul>
-                    </section>
-                </div>
-  <nav>
-    <div class="nav-wrapper">
-      <a href="/index.php" class="brand-logo">Agence de location</a>
-      <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
-      <ul class="right hide-on-med-and-down">
-        <li><a href="sass.html">Créer/Modifier des locataires</a></li>
-        <li><a href="badges.html">Créer des biens</a></li>
-        <li><a href="collapsible.html">Créer un bail</a></li>
-        <li>  <i class="large material-icons">perm_identity</i 
+  <head>
+    <!--Import Google Icon Font-->
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="bower_components/materialize/dist/css/materialize.css"  media="screen,projection"/>
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  </head>
+  <body>
+    <header>  
+<nav>
+  <div class="nav-wrapper">
+    <a href="/projetTIC/index.php" class="brand-logo">  Agence de location</a>
+    <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+    <ul class="right hide-on-med-and-down">
+      <li><a href="sass.html">Créer/Modifier des locataires</a></li>
+      <li><a href="/projetTIC/createBien.php">Créer des biens</a></li>
+      <li><a href="collapsible.html">Créer un bail</a></li>
+      <!-- Onglet de droite de connection-->
+      <?php
+      if (logged_on())
+      {
+      ?>
+      <li><a class="dropdown-button" href="#!" data-activates="dropdown_connexion_normal"><i class="material-icons left">perm_identity</i><?php if (logged_on()) { echo (ucfirst($_SESSION['username']));} ?><i class="material-icons right">arrow_drop_down</i></a></li>
+      <ul id='dropdown_connexion_normal' class='dropdown-content'>
+        <li><a href="/projetTIC/logoff.php">Se déconnecter</a></li>
       </ul>
-      <ul class="side-nav" id="mobile-demo">
-        <li><a href="sass.html">Créer/Modifier des locataires</a></li>
-        <li><a href="badges.html">Créer des biens</a></li>
-        <li><a href="collapsible.html">Créer un bail</a></li>
+      <?php } else {?>
+      <li><a href="/projetTIC/logon.php"><i class="material-icons left">power_settings_new</i>Se Connecter</a></li>
+      <?php } ?>
+    </ul>
+    <ul class="side-nav" id="mobile-demo">
+      <li><a href="sass.html">Créer/Modifier des locataires</a></li>
+      <li><a href="/projetTIC/createBien.php">Créer des biens</a></li>
+      <li><a href="collapsible.html">Créer un bail</a></li>
+      <?php
+      if (logged_on())
+      {
+      ?>
+      <li><a class="dropdown-button" href="#!" data-activates="dropdown_connexion_mobile"><i class="material-icons left">perm_identity</i><?php if (logged_on()) { echo (ucfirst($_SESSION['username']));} ?><i class="material-icons right">arrow_drop_down</i></a></li>
+      <ul id='dropdown_connexion_mobile' class='dropdown-content'>
+        <li><a href="/projetTIC/logoff.php">Se déconnecter</a></li>
       </ul>
-    </div>
-  </nav>
-
-                            <!-- ON PEUT EFFACER CETTE PARTIE INUTILE-->
-                            <?php
-                                /*
-                                $statement = $databaseConnection->prepare("SELECT id, menulabel FROM pages");
-                                $statement->execute();
-
-                                if($statement->error)
-                                {
-                                    die("Database query failed: " . $statement->error);
-                                }
-
-                                $statement->bind_result($id, $menulabel);
-                                while($statement->fetch())
-                                {
-                                    echo "<li><a href=\"/page.php?pageid=$id\">$menulabel</a></li>\n";
-                                }
-                                */
-                            ?>
-      
-        </header>
-
+      <?php } else {?>
+      <li><a href="/projetTIC/logon.php"><i class="material-icons left">power_settings_new</i>Se Connecter</a></li>
+      <?php } ?>
+    </ul>
+  </div>
+</nav>
+</header>
+<main>
+<div class="container">
