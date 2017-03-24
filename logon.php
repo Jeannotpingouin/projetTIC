@@ -28,27 +28,35 @@
         }
     }
 ?>
-<div id="main">
-    <h2>Log on</h2>
-        <form action="logon.php" method="post">
-            <fieldset>
-            <legend>Log on</legend>
-            <ol>
-                <li>
-                    <label for="username">Username:</label> 
-                    <input type="text" name="username" value="" id="username" />
-                </li>
-                <li>
-                    <label for="password">Password:</label>
-                    <input type="password" name="password" value="" id="password" />
-                </li>
-            </ol>
-            <input type="submit" name="submit" value="Submit" />
-            <p>
-                <a href="index.php">Cancel</a>
-            </p>
-        </fieldset>
+<div class="container">
+<div id="main"  class="center-align">
+    <h4> Bonjour. </h4>
+    <center>
+        <form action="logon.php" method="post" >
+         <div class="row" >
+            <div class="input-field col s6 offset-m3">
+             <i class="material-icons prefix">account_circle</i>
+              <input id="username" name="username" type="text" class="validate" value="">
+              <label for="username">Identifiant</label>
+             </div>
+         </div>
+         <div class="row" >
+             <div class="input-field col m6 offset-m3">
+             <i class="material-icons prefix">vpn_key</i>
+              <input id="password" name="password" type="password" class="validate" >
+              <label for="password">Mot de passe</label>
+             </div>
+         </div>
+         <div class="row">
+            <div class="input-field col m6 offset-m3">
+             <button class="btn waves-effect waves-light" type="submit" name="submit">Connexion
+                <i class="material-icons right">send</i>
+            </button>
+            </div>  
+        </div>
     </form>
+    </center>
 </div>
 </div> <!-- End of outer-wrapper which opens in header.php -->
+
 <?php include ("Includes/footer.php"); ?>

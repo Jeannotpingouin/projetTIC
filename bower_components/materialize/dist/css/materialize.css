@@ -3,7 +3,7 @@
  * Copyright 2014-2015 Materialize
  * MIT License (https://raw.githubusercontent.com/Dogfalo/materialize/master/LICENSE)
  */
-   body {
+ body {
     display: flex;
     min-height: 100vh;
     flex-direction: column;

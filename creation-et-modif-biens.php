@@ -1,7 +1,10 @@
     <?php 
         require_once ("Includes/simplecms-config-sample.php"); 
         require_once  ("Includes/connectDB.php");
-        include("Includes/header.php");         
+        include("Includes/header.php");  
+
+
+        if(logged_on())  {    
      ?>
 
      <h3 style="text-align:center"> Edition bien</h3>
@@ -75,6 +78,7 @@
     
         <!-- Page Content goes here -->
 
-<?php 
-    include ("Includes/footer.php");
- ?>
+	<?php 
+	} 
+	    include ("Includes/footer.php");
+	 ?>

@@ -12,16 +12,20 @@
   <body>
     <header>  
 <nav>
-  <div class="nav-wrapper">
+  <div class="nav-wrapper teal ">
     <a href="/projetTIC/index.php" class="brand-logo">  Agence de location</a>
     <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
     <ul class="right hide-on-med-and-down">
+     <?php
+      if (logged_on())
+      {
+      ?>
      <li><a href="/projetTIC/creation-et-modif-locataires.php">Créer/Modifier des locataires</a></li>
         <li><a href="/projetTIC/creation-et-modif-biens.php">Créer des biens</a></li>
         <li><a href="/projetTIC/creation-et-modif-bails.php">Créer un bail</a></li>
       <!-- Onglet de droite de connection-->
       <?php
-      if (logged_on())
+       } if (logged_on())
       {
       ?>
       <li><a class="dropdown-button" href="#!" data-activates="dropdown_connexion_normal"><i class="material-icons left">perm_identity</i><?php if (logged_on()) { echo (ucfirst($_SESSION['username']));} ?><i class="material-icons right">arrow_drop_down</i></a></li>
@@ -34,11 +38,15 @@
     </ul>
 
    <ul class="side-nav" id="mobile-demo">
-        <li><a href="/projet_tic/projetTIC/creation-et-modif-locataires.php">Créer/Modifier des locataires</a></li>
-        <li><a href="/projet_tic/projetTIC/creation-et-modif-biens.php">Créer des biens</a></li>
-        <li><a href="/projet_tic/projetTIC/creation-et-modif-bails.php">Créer un bail</a></li>
-      <?php
+    <?php
       if (logged_on())
+      {
+      ?>
+      <li><a href="/projetTIC/creation-et-modif-locataires.php">Créer/Modifier des locataires</a></li>
+        <li><a href="/projetTIC/creation-et-modif-biens.php">Créer des biens</a></li>
+        <li><a href="/projetTIC/creation-et-modif-bails.php">Créer un bail</a></li>
+      <?php
+      }if (logged_on())
       {
       ?>
       <li><a class="dropdown-button" href="#!" data-activates="dropdown_connexion_mobile"><i class="material-icons left">perm_identity</i><?php if (logged_on()) { echo (ucfirst($_SESSION['username']));} ?><i class="material-icons right">arrow_drop_down</i></a></li>
@@ -53,4 +61,4 @@
 </nav>
 </header>
 <main>
-<div class="container">
+

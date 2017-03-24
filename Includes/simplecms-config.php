@@ -23,7 +23,7 @@ define('DB_USER', $connectstr_dbusername);
 define('DB_PASSWORD', $connectstr_dbpassword);
 /** MySQL hostname */
 define('DB_HOST', $connectstr_dbhost);
-echo('DB_HOST');
+
 
 //Admin User 
 define('DEFAULT_ADMIN_USERNAME', getenv('SITE_ADMIN_USER'));
