@@ -1,6 +1,7 @@
     <?php 
         require_once ("Includes/simplecms-config-sample.php"); 
         require_once  ("Includes/connectDB.php");
+        require_once ("src/ajax/init_list_biens.php");
         include("Includes/header.php");  
 
 
@@ -95,8 +96,29 @@
                 <i class="material-icons right">playlist_add</i>
             </button>
         </div>
-    </div>
 
+    <table class="responsive-table striped" id="tableBiens">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Propriétaire</th>
+                <th>Superficie</th>
+                <th>Prix</th>
+                <th>Nb pièces</th>
+                <th>Nb chambres</th>
+                <th>Etage</th>
+                <th>Adresse</th>
+                <th>Ville</th>
+                <th>Etat</th>    
+                <th>Locataire</th>   
+                 <th>Syndicat</th>     
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+</div>
    
     
         <!-- Page Content goes here -->

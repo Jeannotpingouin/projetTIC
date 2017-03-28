@@ -46,6 +46,10 @@
                             <select id="create_etatBien" type="text" class="validate" name="create_etatBien"></select>
                             <label for="create_etatBien">Etat</label>
                         </div>
+                         <div class="input-field col s12">
+                            <textarea id="create_descriptionBien" type="text" class="validate" name="create_descriptionBien"></textarea>
+                            <label for="create_descriptionBien">Description</label>
+                        </div>
                      </div>
                    </td>
                    <td  class="input-field col s4">
@@ -54,49 +58,42 @@
                     <h5 style="text-align:center"> Adresse </h5>
                         <div class="input-field col s12">
                              <i class="material-icons prefix">navigation</i>
-                            <input id="create_adresse1Bien" type="text" class="validate" name="create_adresse1Bien">
-                            <label for="create_adresse1Bien">* Adresse 1</label>
+                            <input id="create_rueBien" type="text" class="validate" name="create_rueBien">
+                            <label for="create_rueBien">* Rue</label>
                         </div>
-                        <div class="input-field col s12">
-                           <i class="material-icons prefix">navigation</i>
-                            <input id="create_adresse2Bien" type="text" class="validate" name="create_adresse2Bien">
-                            <label for="create_adresse2Bien">* Adresse 2 </label>
                         </div>
-                     
+                      
                         <div class="input-field col s12">
                         <i class="material-icons prefix">navigation</i>
                             <input id="create_codePostalBien" type="text" class="validate" name="create_codePostalBien">
-                            <label for="create_codePostalBien"> Code postal</label>
+                            <label for="create_codePostalBien"> * Code postal</label>
                         </div>
                         <div class="input-field col s12">
                              <i class="material-icons prefix">navigation</i>
                             <input id="create_villeBien" type="text" class="validate" name="create_villeBien">
                             <label for="create_villeBien">* Ville </label>
-                        </div>  
+                        </div> 
+                         <div class="input-field col s12">
+                        <i class="material-icons prefix">navigation</i>
+                            <input id="create_complementAdresseBien" type="text" class="validate" name="create_complementAdresseBien">
+                            <label for="create_complementAdresseBien"> Complément</label>
+                        </div>
+                        <div cla 
                       </div>
                    </td>
 
                    <td class="input-field col s4">
                     <div class="row">
                       <h5 style="text-align:center"> Autre </h5>
-                      <div class="input-field col s12">
-                            Si le syndicat existe déjà, choisir dans cette liste
-                        </div>
-                      <div class="input-field col s12">
-                            <select></select>
-                        </div>
-                         <div class="input-field col s12">
-                            Sinon l'ajouter ici :
-                        </div>
                         <div class="input-field col s12">
                             
-                            <input id="create_adresse1Bien" type="text" class="validate" name="create_adresse1Bien">
-                            <label for="create_adresse1Bien">Nom</label>
+                            <input id="create_nomSyndicBien" type="text" class="validate" name="create_nomSyndicBien">
+                            <label for="create_nomSyndicBien">Nom</label>
                         </div>
                         <div class="input-field col s12">
                           
-                            <input id="create_adresse2Bien" type="text" class="validate" name="create_adresse2Bien">
-                            <label for="create_adresse2Bien">Mail </label>
+                            <input id="create_mailSyndicBien" type="text" class="validate" name="create_mailSyndicBien">
+                            <label for="create_mailSyndicBien">Mail </label>
                         </div> 
                       </div>
                    </td>
@@ -108,13 +105,19 @@
               <td class="input-field col s6">
                <div class="row">
                 <h5 style="text-align:center"> Propriétaire </h5>
+                   <div class="input-field col s12">
+                         <i class="material-icons prefix">account_circle</i>
+                        <input id="create_civilitePBien" type="text" class="validate" name="create_civilitePBien">
+                        <label for="create_civilitePBien">* Civilité</label>
+                    </div>
+
                     <div class="input-field col s12">
                          <i class="material-icons prefix">account_circle</i>
                         <input id="create_namePBien" type="text" class="validate" name="create_namePBien">
                         <label for="create_namePBien">* Nom</label>
                     </div>
                    <div class="input-field col s12">
-                         <i class="material-icons prefix">account_circle</i>
+                         <i class="material-icons prefix">account_circle</i>git 
                         <input id="create_prenomPBien" type="text" class="validate" name="create_prenomPBien">
                         <label for="create_prenomPBien">* Prénom</label>
                     </div>
@@ -137,24 +140,24 @@
                     <h5 style="text-align:center"> Adresse </h5>
                         <div class="input-field col s12">
                             
-                            <input id="create_adresse1PBien" type="text" class="validate" name="create_adresse1PBien">
-                            <label for="create_adresse1PBien">* Adresse 1</label>
-                        </div>
-                        <div class="input-field col s12">
-                          
-                            <input id="create_adresse2PBien" type="text" class="validate" name="create_adresse2PBien">
-                            <label for="create_adresse2PBien">* Adresse 2 </label>
+                            <input id="create_ruePBien" type="text" class="validate" name="create_ruePBien">
+                            <label for="create_ruePBien">* Rue</label>
                         </div>
                      
                         <div class="input-field col s12">
                       
                             <input id="create_codePostalPBien" type="text" class="validate" name="create_codePostalPBien">
-                            <label for="create_codePostalPBien"> Code postal</label>
+                            <label for="create_codePostalPBien">* Code postal</label>
                         </div>
                         <div class="input-field col s12">
                       
                             <input id="create_villePBien" type="text" class="validate" name="create_villePBien">
                             <label for="create_villePBien">* Ville </label>
+                        </div>  
+                         <div class="input-field col s12">
+                      
+                            <input id="create_complementAdressePBien" type="text" class="validate" name="create_complementAdressePBien">
+                            <label for="create_complementAdressePBien">Complément </label>
                         </div>  
                       </div>
                    </td>
