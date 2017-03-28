@@ -6,75 +6,98 @@
 
         if(logged_on())  {    
      ?>
+<div class="container">
+    <h4>Gestion des biens</h4> <br>
+    <div class=row>
+        <fieldset>
+            <legend> Champs de recherche </legend>
+             <form  id="formBail" action="src/ajax/search_biens.php" method="POST">
+            <table>
+            <tr>
+            	<td>
+            	 <div class="row">
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">account_circle</i>
+                        <input id="search_nomLocataire" type="text" class="validate" name="search_nomLocataire">
+                        <label for="search_nomLocataire">Nom propriétaire</label>
+                    </div>
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">account_circle</i>
+                        <input id="search_nomCautionnaire" type="text" class="validate" name="search_nomCautionnaire">
+                        <label for="search_nomCautionnaire">Nom du cautionnaire</label>
+                    </div>
+                 
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">navigation</i>
+                            <input id="search_rue" type="text" class="validate" name="search_rue">
+                            <label for="search_rue">Rue</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">navigation</i>
+                            <input id="search_ville" type="text" class="validate" name="search_ville">
+                            <label for="search_ville">Ville</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">navigation</i>
+                            <input id="search_codePostal" type="text" class="validate" name="search_codePostal">
+                            <label for="search_codePostal">Code Postal</label>
+                        </div>
+                  
+                    </div>
+                   </td>
 
-     <h3 style="text-align:center"> Edition bien</h3>
-      <form method="post">
-     <table>
-         <tr>
-         	 <th>	
-	     		<h4 style="text-align:center"> Le bien </h4>
-	     	</th>
-	     	 <th>	
-	     		<h4 style="text-align:center"> Adresse </h4>
-	     	</th>
-	     	 <th>	
-	     		<h4 style="text-align:center"> Autre </h4>
-	     	</th>
-         </tr>
-	     <tr>
-	     	 <td>	
-	     		<div style="border-style:none; border-style-left:groove; padding:15px; width:400px; height:400px">
-			        <label style="display: block; width: 200px; float: left; font-size:16px; color:black">* Propriétaire: </label> 
-			        <input type="text" name="proprietaire" value="" style="width:30%"><br>
+                   <td>
+            	 <div class="row">
+                    <div class="input-field col s12">
+              
+                            <input id="search_codePostal" type="text" class="validate" name="search_codePostal">
+                            <label for="search_codePostal">Syndicat</label>
+                        </div>
+                        <div class="input-field col s12">
+              
+                            <input id="search_codePostal" type="text" class="validate" name="search_codePostal">
+                            <label for="search_codePostal">Superficie min</label>
+                        </div>
+                        <div class="input-field col s12">
+              
+                            <input id="search_codePostal" type="text" class="validate" name="search_codePostal">
+                            <label for="search_codePostal">Superficie max</label>
+                        </div>
 
-					<label style="display: block; width: 200px; float: left; font-size:16px; color:black">* Superficie: </label>
-					<input type="text" name="Superficie" value=""  style="width:30%"><br>
+                   	 <div class="input-field col s12">
+              
+                            <input id="search_codePostal" type="text" class="validate" name="search_codePostal">
+                            <label for="search_codePostal">Prix min</label>
+                        </div>
 
-					<label style="display: block; width: 200px; float: left; font-size:16px; color:black"> Nombre de pièces: </label>
-					<input type="text" name="nbPieces" value=""  style="width:30%"><br>
+                         <div class="input-field col s12">
+              
+                            <input id="search_codePostal" type="text" class="validate" name="search_codePostal">
+                            <label for="search_codePostal">Prix max</label>
+                        </div>
+                    </div>
+                    </div>
+                   </td>
+                   </tr>
+                   </table>
+                    <div class="row">
+                     <div class="input-field col s12 center-align ">
+                        <button class="btn waves-effect waves-light " type="submit" name="action" id="rechercherBien">Rechercher
+                        <i class="material-icons right">search</i>
+                        </button>
+                    </div>
+                    </div>
+                </div>
+            </form>
+        </fieldset>
+        <div class="input-field col s12 center-align ">
+             <button class="btn waves-effect waves-light " id="ajouterBien" onclick="window.open('/projetTIC/creation-biens.php')">Ajouter
+                <i class="material-icons right">playlist_add</i>
+            </button>
+        </div>
+    </div>
 
-					<label style="display: block; width: 200px; float: left; font-size:16px; color:black">Nombre de chambres: </label>
-					<input type="text" name="nbChambres" value="" style="width:30%"><br>
-
-					<label style="display: block; width: 200px; float: left; font-size:16px; color:black">Etage: </label> 
-					<input type="text" name="nbPieces" value="" style="width:30%"><br>
-				</div>
-	     	</td>
-
-	     	<td>
-			     <div style="border-style:none; border-left-style:groove; padding:15px;width:400px;height:400px">
-			        <label style="display: block; width: 200px; float: left; font-size:16px; color:black">* Adresse 1: </label> 
-			        <input type="text" name="proprietaire" value="" style="width:30%"><br>
-
-					<label style="display: block; width: 200px; float: left; font-size:16px; color:black">Adresse 2: </label>
-					<input type="text" name="Superficie" value=""  style="width:30%"><br>
-
-					<label style="display: block; width: 200px; float: left; font-size:16px; color:black">* Ville: </label>
-					<input type="text" name="nbPieces" value=""  style="width:30%"><br>
-
-					<label style="display: block; width: 200px; float: left; font-size:16px; color:black">* Code Postal</label>
-					<input type="text" name="nbChambres" value="" style="width:30%"><br>
-				</div>
-	     	</td>
-	     	<td>
-			      <div style="border-style:none; border-left-style:groove; padding:15px;width:400px;height:400px">
-			        <label style="display: block; width: 200px; float: left; font-size:16px; color:black">* Secteur: </label> 
-			        <input type="text" name="proprietaire" value="" style="width:30%"><br>
-
-					<label style="display: block; width: 200px; float: left; font-size:16px; color:black">Agent: </label>
-					<input type="text" name="Superficie" value=""  style="width:30%"><br>
-
-					<label style="display: block; width: 200px; float: left; font-size:16px; color:black">* Ville: </label>
-					<input type="text" name="nbPieces" value=""  style="width:30%"><br>
-
-					<label style="display: block; width: 200px; float: left; font-size:16px; color:black">* Code Postal</label>
-					<input type="text" name="nbChambres" value="" style="width:30%"><br>
-				</div>
-				</div>
-	     	</td>
-	     </tr>
-     </table>
-       </form>
+   
     
         <!-- Page Content goes here -->
 
