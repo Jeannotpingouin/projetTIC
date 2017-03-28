@@ -14,13 +14,19 @@
           <h5 class="header col s12 white-text text-darken-1" style="font-size: 1.35em" >Cette application permet de gérer les locations de bien.</h5>
         </div>
         <div class="row center">
+        <?php 
+        	if (!logged_on()) { 
+		?>
           <a href="logon.php" id="download-button" class="btn-large waves-effect waves-light teal lighten-1">Se connecter</a>
+         <?php 
+     		}
+     	?>
         </div>
         <br><br>
 
       </div>
     </div>
-    <div class="parallax"><img src="src/bandeau.jpg" alt="Unsplashed background img 1" style="display: block; transform: translate3d(-50%, 233px, 0px);"></div>
+    <div class="parallax"><img src="src/bandeau6.jpg" alt="Unsplashed background img 1" style="display: block; transform: translate3d(-50%, 233px, 0px);"></div>
   </div>
   
 <?php 
