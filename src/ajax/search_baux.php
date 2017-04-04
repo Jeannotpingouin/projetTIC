@@ -8,11 +8,9 @@
 	$ville = strip_tags($_POST['search_ville']);
 	$codePostal = strip_tags($_POST['search_codePostal']);
 
- 
-	//On a recupéré les données du champ de recherche
 	$locataires = show_bail($databaseConnection,$nomLocataire,$nomCautionnaire,$rue,$ville,$codePostal);
-    $locataires->bind_result($civilite,$nom,$prenom,$mail,$tel,$idCautionnaire);
-  	echo json_encode($locataires->fetch_all());   
+
+   	echo json_encode($locataires); 
 
 
 ?>

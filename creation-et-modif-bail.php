@@ -59,16 +59,26 @@ if(logged_on())  {
                 <th>Nom / Prénom du Cautionnaire</th>
                 <th>Téléphone du Cautionnaire</th>
                 <th>Mail du Cautionnaire</th>
-                <th>Adresse du Cautionnaire</th>
-                <th>Ville du Cautionnaire</th>
+                <th>Adresse du Bien</th>
+                <th>Ville du Bien</th>
                 <th>Date du début du Bail</th>
                 <th>Date de fin du Bail</th>    
             </tr>
-        </thead>
-        <tbody>
+        </thead> 
+        <tbody id="tbodyBail">
 
         </tbody>
-    </table>
+    </table><br><br>
+    <div class="fixed-action-btn horizontal click-to-toggle">
+    <a id="menuBaux" class="btn-floating btn-large red">
+      <i class="material-icons">menu</i>
+    </a>
+    <ul>
+      <li><a class="btn-floating blue darken-4"  id="addBaux" href="creation-baux.php"><i class="material-icons">add</i></a></li>
+      <li><a class="btn-floating orange lighten-1" id="editBaux" ><i class="material-icons">mode_edit</i></a></li>
+      <li><a class="btn-floating red" id="deleteBaux" ><i class="material-icons">delete</i></a></li>
+    </ul>
+  </div>
 </div>
 <?php
 }

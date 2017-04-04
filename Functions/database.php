@@ -72,44 +72,74 @@
     function show_bail($databaseConnection,$nomLoc,$nomCaut,$rue,$ville,$codePostal)
     {
 
-        $query_check_bail_exists = "SELECT count(*) FROM louer";
-        $statement_check_bail_exists = $databaseConnection->prepare($query_check_bail_exists);
-        $statement_check_bail_exists->execute();
-        $statement_check_bail_exists->store_result();
+        $query_check_bail_exists = "SELECT * FROM louer";
+        $statement_check_bail_exists = $databaseConnection->query($query_check_bail_exists);
 
-        if($statement_check_bail_exists->num_rows != 0)
-        {
-                    $query_show_bail = "SELECT loc.nom, loc.prenom,c.nom,c.prenom, 
-                                FROM louer l, locataire loc,bien b, cautionnaire c, adresse a
-                                WHERE l.idLocataire = loc.ID and loc.idCautionnaire = c.ID and l.idBien = b.ID and  b.idAdresse = a.ID";
-                    if (!empty($nomLoc)) {
-                         $query_show_bail .= " AND ";
-                         $query_show_bail .= "loc.nom= '. $nomLoc . %'";
-                    }
-                     if (!empty($nomCaut)) {
-                         $query_show_bail .= " AND ";
-                         $query_show_bail .= "c.nom= '. $nomCaut . %'";
-                    }
-                      if (!empty($rue)) {
-                         $query_show_bail .= " AND ";
-                         $query_show_bail .= "c.nom= '. $rue . %'";
-                    }
-                        if (!empty($ville)) {
-                         $query_show_bail .= " AND ";
-                         $query_show_bail .= "c.nom= '. $ville . %'";
-                    }
-                        if (!empty($codePostal)) {
-                         $query_show_bail .= " AND ";
-                         $query_show_bail .= "c.nom= '. $codePostal . %'";
-                    }
-                    echo $query_show_bail;
-             $statement_show_bail = $databaseConnection->prepare($query_show_bail);
-            $statement_show_bail->execute();
-            $statement_show_bail->store_result();
-           // return "bonjou";
-        }
+        
+                if( $statement_check_bail_exists->num_rows != 0)
+                {               
+                            $query_show_bail = "SELECT l.ID,loc.nom, loc.prenom,loc.tel, loc.mail,c.nom,c.prenom,c.tel,c.mail, a.rue, a.codePostal,a.ville,l.dateDebut, l.dateFin
+                                        FROM louer l, locataire loc,bien b, cautionnaire c, adresse a
+                                        WHERE l.idLocataire = loc.ID and ((loc.idCautionnaire iS NULL) OR (c.ID = loc.idCautionnaire)) and l.idBien = b.ID and  b.idAdresse = a.ID";
+                            if (!empty($nomLoc)) {
+                                 $query_show_bail .= " AND ";
+                                 $query_show_bail .= "loc.nom= '$nomLoc'";
+                            }
+                             if (!empty($nomCaut)) {
+                                 $query_show_bail .= " AND ";
+                                 $query_show_bail .= "c.nom= '$nomCaut'";
+                            }
+                              if (!empty($rue)) {
+                                 $query_show_bail .= " AND ";
+                                 $query_show_bail .= "c.nom= '$rue'";
+                            }
+                                if (!empty($ville)) {
+                                 $query_show_bail .= " AND ";
+                                 $query_show_bail .= "c.nom= '$ville'";
+                            }
+                                if (!empty($codePostal)) {
+                                 $query_show_bail .= " AND ";
+                                 $query_show_bail .= "c.nom= '$codePostal'";
+                            }
+            
+                    $statement_show_bail = $databaseConnection->query($query_show_bail); 
+  
+                    return $statement_show_bail->fetch_all();
+             }
 
     }
 
 
+
+function delete_bail($databaseConnection,$identifiant)
+    {
+
+        $query_check_bail_exists = "SELECT * FROM louer where ID = ?";
+        $statement_check_bail_exists = $databaseConnection->prepare($query_check_bail_exists);
+        $statement_check_bail_exists->bind_param('s', $identifiant);
+        $statement_check_bail_exists->execute();
+        $statement_check_bail_exists->store_result();
+        
+                if( $statement_check_bail_exists->num_rows != 0)
+                {               
+                    $query_delete_bail ="DELETE FROM louer WHERE ID=".$identifiant;
+                    if($databaseConnection->query($query_delete_bail) == TRUE) 
+                        return "yes";
+             }
+
+    }
+
+function search_ensemble_bien($databaseConnection){
+        
+        $query_check_bien_exists = "SELECT * FROM bien";
+        $statement_check_bien_exists = $databaseConnection->query($query_check_bien_exists);
+         
+                if( $statement_check_bail_exists->num_rows != 0)
+                {               
+                    $query_search_bien = "SELECT * FROM bien b, adresse a WHERE  b.idAdresse = a.ID";
+                    $statement_search_bien =$databaseConnection->query($query_search_bien);
+                    return $statement_search_bien->fetch_all();
+                }
+
+}
 ?>
