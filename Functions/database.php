@@ -133,13 +133,37 @@ function search_ensemble_bien($databaseConnection){
         
         $query_check_bien_exists = "SELECT * FROM bien";
         $statement_check_bien_exists = $databaseConnection->query($query_check_bien_exists);
-         
-                if( $statement_check_bail_exists->num_rows != 0)
+                if( $statement_check_bien_exists->num_rows != 0)
                 {               
                     $query_search_bien = "SELECT * FROM bien b, adresse a WHERE  b.idAdresse = a.ID";
                     $statement_search_bien =$databaseConnection->query($query_search_bien);
-                    return $statement_search_bien->fetch_all();
+                    return $statement_search_bien;
                 }
+
+}
+
+function add_edit_baux($databaseConnection,$action,$nomLoc,$prenomLoc, $telLoc,$mailLoc,$dateDebutLoc,$dateFinLoc,$idBienLoc,$nomCaut,$prenomCaut,$telCaut,$mailCaut,$adrPrincipCaut,$adrComplCaut,$villeCaut,$codePostalCaut){
+
+     $query_check_bail_exists = "SELECT * FROM louer";
+     $statement_check_bail_exists = $databaseConnection->query($query_check_bail_exists);
+
+        
+    if( $statement_check_bail_exists->num_rows != 0)
+    {
+            if($action == "insert"){
+            //INSERT DANS LA TABLE ADRESSE - ADRESSE CAUTIONNAIRE
+            $insert_baux = "INSERT INTO table VALUES ('valeur 1', 'valeur 2', ...)";
+            //INSERT DANS LA TABLE CAUTIONNAIRE
+
+            //INSERT DANS LA TABLE LOCATAIRE
+
+            //INSERT DANS LA TABLE LOUER
+
+        }
+        else if($action == "modif"){
+
+        }
+    }
 
 }
 ?>

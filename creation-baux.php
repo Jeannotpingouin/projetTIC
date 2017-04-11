@@ -5,8 +5,8 @@ include("Includes/header.php");
 if(logged_on())  {
 ?>
 <div class="main">
-	<h4 >Création d'un bail</h4> <br>
-	<form  id="addBail" action="src/ajax/add_baux.php" method="POST">
+	<h4 >Création/Edition d'un bail</h4> <br>
+	<form  id="formAddBail" action="src/ajax/add_baux.php" method="POST">
 	<div class="row">
 		<div class="input-field col m3">
 			<div class="row">
@@ -48,14 +48,14 @@ if(logged_on())  {
 				<div class="input-field col m12">
 					<div class="input-field col s12">
 						<i class="material-icons prefix">today</i>
-						 <input id="add_edit_dateDebutLocataire" type="date" class="datepicker" required>
+						 <input id="add_edit_dateDebutLocataire" name="add_edit_dateDebutLocataire" type="date" class="datepicker" required>
 						<label for="add_edit_dateDebutLocataire">* Date du début</label>
 			 			
 			 		</div>
 
 			 			<div class="input-field col s12">
 						<i class="material-icons prefix">today</i>
-						 <input id="add_edit_dateFinLocataire" type="date" class="datepicker" required>
+						 <input id="add_edit_dateFinLocataire" name="add_edit_dateFinLocataire" type="date" class="datepicker" required>
 						<label for="add_edit_dateFinLocataire">* Date de fin</label>
 			 			
 			 		</div>
@@ -68,17 +68,22 @@ if(logged_on())  {
 				<div class="input-field col s12">
 						<i class="material-icons prefix">search</i>
 						 <input id="add_edit_bienLocataire"  list="browsers" required>
-						
-					<datalist id="browsers">
-					<?php 
+					
+						 <datalist id="browsers">
+					<?php
+
 						$result = search_ensemble_bien($databaseConnection);
-						if(isset($result)){
-							foreach($result as $value){
-								echo("<option id=".$value[0]." value=".$value[1]."m² ".$value[1]." pièces ".$value[8]." ".$value[11]." >");
-							}
-					}
+						
+						if($result != FALSE){
+
+								$row = $result->fetch_array();  
+								echo("<option id=".$row[0]." value=".$row[1]."m²&nbsp;".$row[2]."&nbsp;pièces,&nbsp;".$row[9]."&nbsp;".$row[11]." >");
+							
+						}
+				 
 					?>
-					</datalist>
+				
+					 </datalist>
 				</div>
 			</div>
 		</div>
@@ -123,23 +128,23 @@ if(logged_on())  {
 		<div class="input-field col m12">
 					<div class="input-field col s12">
 						<i class="material-icons prefix">location_on</i>
-						<input id="add_edit_addresseCautionnaire" type="text" class="validate" name="add_edit_nomCautionnaire" required>
+						<input id="add_edit_addresseCautionnaire" type="text" class="validate" name="add_edit_addresseCautionnaire" required>
 						<label for="add_edit_addresseCautionnaire">* Adresse 1 </label>
 					</div>
 					<div class="input-field col s12">
 						<i class="material-icons prefix">location_on</i>
-						<input id="add_edit_addresseCompleCautionnaire" type="text" class="validate" name="add_edit_prenomCautionnaire" required>
+						<input id="add_edit_addresseCompleCautionnaire" type="text" class="validate" name="add_edit_addresseCompleCautionnaire" required>
 						<label for="add_edit_addresseCompleCautionnaire">* Adresse 2 </label>
 					</div>
 					<div class="input-field col s12">
 						
 						<i class="material-icons prefix">location_on</i>
-						<input id="add_edit_villeCautionnaire" type="text" class="validate" name="add_edit_telCautionnaire" required>
+						<input id="add_edit_villeCautionnaire" type="text" class="validate" name="add_edit_villeCautionnaire" required>
 						<label for="add_edit_villeCautionnaire">* Ville</label>
 					</div>
 					<div class="input-field col s12">
 						<i class="material-icons prefix">location_on</i>
-						<input id="add_edit_codePostalCautionnaire" type="text" class="validate" name="add_edit_mailCautionnaire"
+						<input id="add_edit_codePostalCautionnaire" type="text" class="validate" name="add_edit_codePostalCautionnaire"
 						pattern='^[0-9]{5}$' required >
 						<label for="add_edit_codePostalCautionnaire" data-error="Incorrect" data-success="Bon">Code Postal</label>
 					</div>
@@ -148,17 +153,18 @@ if(logged_on())  {
 
 	</div>
 	</div>
-	<div class="row ">
-	<div class="input-field col m12 align-wrapper">
-		<button class="center btn waves-effect waves-light btn-large " type="submit" name="action">Valider
+	<div class="row align-wrapper">
+	<div class="col s12 m12 center">
+		<button class="btn waves-effect waves-light btn-large" type="submit" name="action">Valider
 		    <i class="material-icons right">send</i>
 		  </button>
 	</div>
 	</div>
-
+</div>
 
 		
-
+</form>
+</div>
 
 
 <?php

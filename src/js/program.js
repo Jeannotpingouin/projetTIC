@@ -1,7 +1,9 @@
  			$(".button-collapse").sideNav();
         	$.clickDelete = null;
             	$.clickEdit = null;
-            	
+            
+
+
  			function ajaxDeleteBaux(identifiant){
  				  $.ajax({
 			                url: 'src/ajax/delete_baux.php', // Le nom du fichier indiqué dans le formulaire
@@ -12,8 +14,11 @@
 			                }
 			            });
  			}
+
+
             $(document).ready(function() {
     			
+  					
 				  $('.datepicker').pickadate({
 				    selectMonths: true, // Creates a dropdown to control month
 				    selectYears: 15 // Creates a dropdown of 15 years to control year
@@ -37,6 +42,7 @@
 					 $.clickEdit = null
 
 				});
+
 
 				$('#editBaux').on('click',function(e){
 					if(!$(this).hasClass("orange lighten-1")){
@@ -112,6 +118,31 @@
 			            });
 				});
 
+			    /********************************************************************************************************
+			    ****************************************FONCTION DE CREATION BAIL****************************************
+			    ********************************************************************************************************/
+			       $('#formAddBail').on('submit', function(e) {
+			        e.preventDefault(); // J'empêche le comportement par défaut du navigateur, c-à-d de soumettre le formulaire
+			        var $this = $(this); // L'objet jQuery du formulaire
+
+			 		var g =$('#add_edit_bienLocataire').val();  
+					var id = $('#browsers option').filter(function() { return $.trim( $(this).val() ) === $.trim(g); }).attr('id');
+					 
+					var myObject = {
+						add_edit_bienLocataire : id
+					};
+					$formSerialize = $this.serialize() + "&" + $.param(myObject);
+					
+			            $.ajax({
+			                url: $this.attr('action'), // Le nom du fichier indiqué dans le formulaire
+			                type: $this.attr('method'), // La méthode indiquée dans le formulaire (get ou post)
+			                data: $formSerialize, // Je sérialise les données (j'envoie toutes les valeurs présentes dans le formulaire)
+			                success: function(data,statut) { // Je récupère la réponse du fichier PHP
+			         				
+			                }
+			            });
+			     
+				});
 
 
               });

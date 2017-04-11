@@ -24,6 +24,7 @@ include ("closeDB.php");
       <script type="text/javascript" src="bower_components/materialize/dist/js/materialize.js"></script>
 
       <script type="text/javascript" src="src/js/program.js"></script>
+
     </body>
 </html>
 

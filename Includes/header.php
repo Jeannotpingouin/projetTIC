@@ -21,9 +21,9 @@
             {
             ?>
             <li>
-              <li><a href="/projetTIC/creation-et-modif-biens.php">Gestion des biens</a></li>
-              <li><a href="/projetTIC/creation-et-modif-bail.php">Gestion des baux</a></li>
-              <li><a href="/projetTIC/creation-et-modif-syndicats.php">Gestion des syndicats</a></li>
+              <li  class="<?php echo (strpos($_SERVER['PHP_SELF'],"/creation-et-modif-biens.php") ? "active" : "");?>" ><a href="/projetTIC/creation-et-modif-biens.php">Gestion des biens</a></li>
+              <li class="<?php echo (strpos($_SERVER['PHP_SELF'],"/creation-et-modif-bail.php") ? "active" : "");?>"><a href="/projetTIC/creation-et-modif-bail.php" >Gestion des baux</a></li>
+              <li class="<?php echo (strpos($_SERVER['PHP_SELF'],"/creation-et-modif-syndicats.php") ? "active" : "");?>"><a href="/projetTIC/creation-et-modif-syndicats.php">Gestion des syndic</a></li>
               <!-- Onglet de droite de connection-->
               <?php
               } if (logged_on())
@@ -42,9 +42,10 @@
               if (logged_on())
               {
               ?>
-              <li><a href="/projetTIC/creation-et-modif-biens.php">Gestion des biens</a></li>
-              <li> <a href="/projetTIC/creation-et-modif-bail.php">Gestion des baux</a></li>
-              <li><a href="/projetTIC/creation-et-modif-syndicats.php">Gestion des syndicats</a></li>
+
+             <li ><a href="/projetTIC/creation-et-modif-biens.php" >Gestion des biens</a></li>
+              <li><a href="/projetTIC/creation-et-modif-bail.php" class="menuBaux">Gestion des baux</a></li>
+              <li><a href="/projetTIC/creation-et-modif-syndicats.php" class="syndic">Gestion des syndic</a></li>
               <?php
               }if (logged_on())
               {
