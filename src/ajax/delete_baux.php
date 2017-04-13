@@ -4,10 +4,9 @@
 
 	$identifiant =  strip_tags($_POST['idBaux']);
 
-
 	$reponse = delete_bail($databaseConnection,$identifiant);
 
-   	echo json_encode($reponse); 
+   	echo $reponse; 
 
 
 ?>

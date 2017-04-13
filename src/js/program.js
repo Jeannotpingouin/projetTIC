@@ -89,7 +89,7 @@
 
 				$("#tbodyBail").on('click','tr',function() {
 					 	if($.clickDelete != null){
-							alert($(this).attr("id"));
+					 		//ajaxDeleteBaux(attr("id"));
 						}
 					});
 
@@ -107,9 +107,9 @@
 			                type: $this.attr('method'), // La méthode indiquée dans le formulaire (get ou post)
 			                data: $this.serialize(), // Je sérialise les données (j'envoie toutes les valeurs présentes dans le formulaire)
 			                success: function(data,statut) { // Je récupère la réponse du fichier PHP
-			                 
+			      
 			                     $.each(JSON.parse(data), function(key, val){
-								 
+						
 				 					$('#tbodyBail').append('<tr id='+val[0]+'><th>'+val[1]+' '+val[2]+'</th><th>'+val[3]+'</th><th>'+val[4]+'</th><th>'+val[5]+' '+val[6]+'</th><th>'+val[7]+'</th><th>'+val[8]+'</th><th>'+val[9]+'</th><th>'+val[11]+'-'+val[10]+'</th><th>'+val[12]+'</th><th>'+val[13]+'</th></tr>');
                              
                         			});
@@ -124,24 +124,27 @@
 			       $('#formAddBail').on('submit', function(e) {
 			        e.preventDefault(); // J'empêche le comportement par défaut du navigateur, c-à-d de soumettre le formulaire
 			        var $this = $(this); // L'objet jQuery du formulaire
-
+			
 			 		var g =$('#add_edit_bienLocataire').val();  
 					var id = $('#browsers option').filter(function() { return $.trim( $(this).val() ) === $.trim(g); }).attr('id');
 					 
 					var myObject = {
 						add_edit_bienLocataire : id
 					};
+			
 					$formSerialize = $this.serialize() + "&" + $.param(myObject);
-					
+				
 			            $.ajax({
 			                url: $this.attr('action'), // Le nom du fichier indiqué dans le formulaire
 			                type: $this.attr('method'), // La méthode indiquée dans le formulaire (get ou post)
 			                data: $formSerialize, // Je sérialise les données (j'envoie toutes les valeurs présentes dans le formulaire)
 			                success: function(data,statut) { // Je récupère la réponse du fichier PHP
-			         				
+			         				if(data == "ok"){
+			         					$(location).attr('href', '/projetTIC/creation-et-modif-bail.php');
+			         				}
 			                }
 			            });
-			     
+			
 				});
 
 

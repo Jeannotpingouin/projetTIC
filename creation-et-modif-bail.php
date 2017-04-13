@@ -9,7 +9,7 @@ if(logged_on())  {
     <div class=row>
         <fieldset>
             <legend> Champs de recherche </legend>
-            <form  id="formBail" action="src/ajax/search_baux.php" method="POST">
+            <form  id="formBail" action="src/ajax/search_baux.php" method="POST">   
                 <div class="row">
                     <div class="input-field col s6">
                         <i class="material-icons prefix">account_circle</i>
@@ -82,5 +82,5 @@ if(logged_on())  {
 </div>
 <?php
 }
-include ("Includes/footer.php");
+    include ("Includes/footer.php");
 ?>

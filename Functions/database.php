@@ -91,15 +91,15 @@
                             }
                               if (!empty($rue)) {
                                  $query_show_bail .= " AND ";
-                                 $query_show_bail .= "c.nom= '$rue'";
+                                 $query_show_bail .= "a.rue= '$rue'";
                             }
                                 if (!empty($ville)) {
                                  $query_show_bail .= " AND ";
-                                 $query_show_bail .= "c.nom= '$ville'";
+                                 $query_show_bail .= "a.ville= '$ville'";
                             }
                                 if (!empty($codePostal)) {
                                  $query_show_bail .= " AND ";
-                                 $query_show_bail .= "c.nom= '$codePostal'";
+                                 $query_show_bail .= "a.codePostal= '$codePostal'";
                             }
             
                     $statement_show_bail = $databaseConnection->query($query_show_bail); 
@@ -122,7 +122,7 @@ function delete_bail($databaseConnection,$identifiant)
         
                 if( $statement_check_bail_exists->num_rows != 0)
                 {               
-                    $query_delete_bail ="DELETE FROM louer WHERE ID=".$identifiant;
+                    $query_delete_bail ="DELETE FROM louer  WHERE ID=".$identifiant;
                     if($databaseConnection->query($query_delete_bail) == TRUE) 
                         return "yes";
              }
@@ -144,26 +144,28 @@ function search_ensemble_bien($databaseConnection){
 
 function add_edit_baux($databaseConnection,$action,$nomLoc,$prenomLoc, $telLoc,$mailLoc,$dateDebutLoc,$dateFinLoc,$idBienLoc,$nomCaut,$prenomCaut,$telCaut,$mailCaut,$adrPrincipCaut,$adrComplCaut,$villeCaut,$codePostalCaut){
 
-     $query_check_bail_exists = "SELECT * FROM louer";
-     $statement_check_bail_exists = $databaseConnection->query($query_check_bail_exists);
+    if($action == "insert"){
+    //INSERT DANS LA TABLE ADRESSE - ADRESSE CAUTIONNAIRE
+    $query_insert_adresse = "INSERT INTO adresse(rue,complement,codePostal,ville) VALUES ('$adrPrincipCaut', '$adrComplCaut','$codePostalCaut','$villeCaut')";
+    $statement_insert_adresse = $databaseConnection->query($query_insert_adresse);
+    $idAdresse = $databaseConnection->insert_id;
+    //INSERT DANS LA TABLE CAUTIONNAIRE
+    $query_insert_cautionnaire = "INSERT INTO cautionnaire(nom,prenom,mail,tel,idAdresse) VALUES ('$nomCaut','$prenomCaut','$mailCaut','$telCaut','$idAdresse')";           
+    $statement_insert_cautionnaire = $databaseConnection->query($query_insert_cautionnaire);
+    $idCautionnaire = $databaseConnection->insert_id;
+    //INSERT DANS LA TABLE LOCATAIRE
+    $query_insert_locataire = "INSERT INTO locataire(nom,prenom,mail,tel,idCautionnaire) VALUES ('$nomLoc','$prenomLoc','$mailLoc','$telLoc','$idCautionnaire')";
+    $statement_insert_locataire = $databaseConnection->query($query_insert_locataire);
+    $idLocataire = $databaseConnection->insert_id;
+    //INSERT DANS LA TABLE LOUER
+    $query_insert_louer = "INSERT INTO louer(idLocataire,idBien,dateDebut,dateFin) VALUES ('$idLocataire','$idBienLoc','$dateDebutLoc','$dateFinLoc')" ;
+    $statement_insert_louer = $databaseConnection->query($query_insert_louer);
+    return "ok";    
+}
+else if($action == "edition"){
 
-        
-    if( $statement_check_bail_exists->num_rows != 0)
-    {
-            if($action == "insert"){
-            //INSERT DANS LA TABLE ADRESSE - ADRESSE CAUTIONNAIRE
-            $insert_baux = "INSERT INTO table VALUES ('valeur 1', 'valeur 2', ...)";
-            //INSERT DANS LA TABLE CAUTIONNAIRE
-
-            //INSERT DANS LA TABLE LOCATAIRE
-
-            //INSERT DANS LA TABLE LOUER
-
-        }
-        else if($action == "modif"){
-
-        }
-    }
+}
+    
 
 }
 ?>

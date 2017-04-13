@@ -1,7 +1,6 @@
 <?php
 include ("closeDB.php");        
 ?>
-     
 </main>
         <footer class="page-footer  teal ">
           <div class="container">
@@ -22,7 +21,6 @@ include ("closeDB.php");
           <!--Import jQuery before materialize.js-->
       <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
       <script type="text/javascript" src="bower_components/materialize/dist/js/materialize.js"></script>
-
       <script type="text/javascript" src="src/js/program.js"></script>
 
     </body>
