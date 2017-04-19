@@ -10,7 +10,8 @@
 			                type: 'POST', // La méthode indiquée dans le formulaire (get ou post)
 			                data: 'idBaux='+identifiant, // Je sérialise les données (j'envoie toutes les valeurs présentes dans le formulaire)
 			                success: function(data,statut) { // Je récupère la réponse du fichier PHP
-			 
+			 						if(data == "ok")
+			 							location.reload();
 			                }
 			            });
  			}
@@ -21,8 +22,10 @@
   					
 				  $('.datepicker').pickadate({
 				    selectMonths: true, // Creates a dropdown to control month
-				    selectYears: 15 // Creates a dropdown of 15 years to control year
-				  });
+				    selectYears: 15,
+				    formatSubmit: 'yyyy-mm-dd'
+				  })
+			
 				  
 				$('#deleteBaux').on('click',function(e){
 					if(!$(this).hasClass("red")){
@@ -89,7 +92,12 @@
 
 				$("#tbodyBail").on('click','tr',function() {
 					 	if($.clickDelete != null){
-					 		//ajaxDeleteBaux(attr("id"));
+					 		ajaxDeleteBaux($(this).attr("id"));
+						}
+						if($.clickEdit != null){
+							var parametre = $.param( { action: "edition", id: $(this).attr("id") },true );
+							window.location =  "/projetTIC/creation-baux.php"+"?"+parametre;
+
 						}
 					});
 
@@ -109,7 +117,7 @@
 			                success: function(data,statut) { // Je récupère la réponse du fichier PHP
 			      
 			                     $.each(JSON.parse(data), function(key, val){
-						
+									
 				 					$('#tbodyBail').append('<tr id='+val[0]+'><th>'+val[1]+' '+val[2]+'</th><th>'+val[3]+'</th><th>'+val[4]+'</th><th>'+val[5]+' '+val[6]+'</th><th>'+val[7]+'</th><th>'+val[8]+'</th><th>'+val[9]+'</th><th>'+val[11]+'-'+val[10]+'</th><th>'+val[12]+'</th><th>'+val[13]+'</th></tr>');
                              
                         			});
@@ -124,27 +132,25 @@
 			       $('#formAddBail').on('submit', function(e) {
 			        e.preventDefault(); // J'empêche le comportement par défaut du navigateur, c-à-d de soumettre le formulaire
 			        var $this = $(this); // L'objet jQuery du formulaire
-			
-			 		var g =$('#add_edit_bienLocataire').val();  
-					var id = $('#browsers option').filter(function() { return $.trim( $(this).val() ) === $.trim(g); }).attr('id');
-					 
+					var id =  $("#add_edit_bienLocataire option:selected").attr("id");
+
 					var myObject = {
 						add_edit_bienLocataire : id
 					};
-			
-					$formSerialize = $this.serialize() + "&" + $.param(myObject);
 				
-			            $.ajax({
+					$formSerialize = $this.serialize() + "&" + $.param(myObject);
+					//document.getElementById("formAddBail").reset();
+					$.ajax({
 			                url: $this.attr('action'), // Le nom du fichier indiqué dans le formulaire
 			                type: $this.attr('method'), // La méthode indiquée dans le formulaire (get ou post)
 			                data: $formSerialize, // Je sérialise les données (j'envoie toutes les valeurs présentes dans le formulaire)
 			                success: function(data,statut) { // Je récupère la réponse du fichier PHP
-			         				if(data == "ok"){
+			         			if(data == "ok"){
 			         					$(location).attr('href', '/projetTIC/creation-et-modif-bail.php');
 			         				}
 			                }
 			            });
-			
+		
 				});
 
 

@@ -18,25 +18,28 @@
 	$adresseComplementaireCautionnaire=  $databaseConnection->real_escape_string($_POST['add_edit_addresseCompleCautionnaire']);
 	$villeCautionnaire =  $databaseConnection->real_escape_string($_POST['add_edit_villeCautionnaire']);
 	$codePostalCautionnaire=  $databaseConnection->real_escape_string($_POST['add_edit_codePostalCautionnaire']);
-	
+	$actionForm =  $databaseConnection->real_escape_string($_POST['action']);
 	//Conversion des dates du datepicker
-	$dateDebutLocataire = strtotime($dateDebutLocataire);
+	$dateDebutLocataire = strtotime(str_replace(",","",$dateDebutLocataire));
 	$dateDebutLocataire = (date('Y-m-d',$dateDebutLocataire));
-	$dateFinLocataire = strtotime($dateFinLocataire);
+	$dateFinLocataire = strtotime(str_replace(",","",$dateFinLocataire));
 	$dateFinLocataire = (date('Y-m-d',$dateFinLocataire));
 	
 	//la valeur action : ajouter ou edition
-	if (isset($_GET['action'])){
-		if ($_GET['action'] == "edition")
-			$action = $_GET['action'];
-	} else {
+	$action = NULL;
+		if($actionForm == "insert"){
 			$action = "insert";
-	}
-
+			$idSelected = NULL;
+		}
+		else{
+			$action = "edition";
+			$idSelected = $actionForm;
+		}
+		
 
 	$addBaux = add_edit_baux($databaseConnection,$action,$nomLocataire,$prenomLocataire,$telLocataire,$mailLocataire,
 		$dateDebutLocataire,$dateFinLocataire,$idBienLocataire,$nomCautionnaire,$prenomCautionnaire,$telCautionnaire,$mailCautionnaire,
-		$adressePrincipaleCautionnaire,$adresseComplementaireCautionnaire,$villeCautionnaire,$codePostalCautionnaire);
+		$adressePrincipaleCautionnaire,$adresseComplementaireCautionnaire,$villeCautionnaire,$codePostalCautionnaire,$idSelected);
 
 	echo $addBaux;
 
