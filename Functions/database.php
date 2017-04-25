@@ -160,6 +160,37 @@
 
     }
 
+    function show_syndic($databaseConnection,$nomSyndic, $emailSyndic)
+    {  
+        $query_check_syndic_exists = "SELECT * FROM syndicat_copro";
+        $statement_check_syndic_exists = $databaseConnection->query($query_check_syndic_exists);
+        
+                if( $statement_check_syndic_exists->num_rows != 0)
+                {               
+                            $query_show_syndic = "SELECT s.ID, s.nom, s.mail FROM syndicat_copro s";
+                            if (!empty($nomSyndic)) {
+                                 $query_show_syndic .= " WHERE ";
+                                 $query_show_syndic .= "s.nom = '$nomSyndic'";
+                            }
+                             if (!empty($emailSyndic)) {
+                                if(!empty($nomSyndic)){
+                                    $query_show_syndic .= "AND "; 
+                                }
+                                else{
+                                    $query_show_syndic .= " WHERE ";
+                                }
+                                 
+                                $query_show_syndic .= "s.mail = '$emailSyndic'";
+                            }
+
+                            $query_show_syndic .= " GROUP BY s.ID";
+            
+                    $statement_show_syndics = $databaseConnection->query($query_show_syndic); 
+                    return $statement_show_syndics->fetch_all();
+             }
+
+    }
+
 function delete_bail($databaseConnection,$identifiant)
     {
 
@@ -218,6 +249,25 @@ function delete_bail($databaseConnection,$identifiant)
 
                     $query_delete_bien = "DELETE FROM bien WHERE ID=".$identifiant;
                     $databaseConnection->query($query_delete_bien); 
+
+                    return "ok";
+                }
+
+    }
+
+     function delete_syndic($databaseConnection,$identifiant)
+    {
+        $query_check_syndic_exists = "SELECT * FROM syndicat_copro where ID = ?";
+        $statement_check_syndic_exists = $databaseConnection->prepare($query_check_syndic_exists);
+        $statement_check_syndic_exists->bind_param('s', $identifiant);
+        $statement_check_syndic_exists->execute();
+        $statement_check_syndic_exists->store_result();
+        
+                if( $statement_check_syndic_exists->num_rows != 0)
+                {  
+
+                    $query_delete_syndic = "DELETE FROM syndicat_copro WHERE ID=".$identifiant;
+                    $databaseConnection->query($query_delete_syndic); 
 
                     return "ok";
                 }
@@ -364,6 +414,24 @@ function add_edit_biens($databaseConnection,$action,$superficieBien,$nbPiecesBie
     }
 }
 
+function add_edit_syndics($databaseConnection,$action,$nomSyndic,$emailSyndic,$idSelected){
+
+    if($action == "insert"){
+
+        $queryInsertSyndic = "INSERT IGNORE INTO syndicat_copro VALUE(NULL, '$nomSyndic', '$emailSyndic')";
+        $databaseConnection->query($queryInsertSyndic);
+
+        return "ok";
+    }
+
+    else if($action == "edition"){
+     
+        $query_update_syndic = "UPDATE syndicat_copro set nom = '$nomSyndic', mail='$emailSyndic' where ID =".$idSelected;
+        $statement_query_update_syndic = $databaseConnection->query($query_update_syndic);
+
+        return "ok";
+    }
+}
 
 function search_baux($databaseConnection,$identifiant){
         //Permet de vérifier l'existence d'un bail pour l'identifiant passe en parametre
@@ -486,5 +554,32 @@ function search_biens($databaseConnection,$identifiant){
                     return $donnees_bien;
 
                 }
-}
+    }
+
+    function search_syndics($databaseConnection,$identifiant){
+        //Permet de vérifier l'existence d'un bail pour l'identifiant passe en parametre
+        $query_check_syndic_exists = "SELECT * FROM syndicat_copro where ID = ?";
+        $statement_check_syndic_exists = $databaseConnection->prepare($query_check_syndic_exists);
+        $statement_check_syndic_exists->bind_param('s', $identifiant);
+        $statement_check_syndic_exists->execute();
+        $statement_check_syndic_exists->store_result();
+        
+        //initialisaion de mon tableau qui va contenir toutes les données du formulaire
+        $donnees_syndic = array();
+
+                if( $statement_check_syndic_exists->num_rows != 0)
+                {          
+                     //recuperer les donnees dans la table louer 
+                    $query_syndic = "SELECT nom, mail FROM syndicat_copro WHERE ID=".$identifiant;
+                    $statement_query_syndic = $databaseConnection->query($query_syndic);
+                    $row = $statement_query_syndic->fetch_row();
+                    $nomSyndic = json_encode($row[0]);
+                    $emailSyndic = json_encode($row[1]);
+                
+
+                    array_push($donnees_syndic, $nomSyndic, $emailSyndic);
+
+                    return $donnees_syndic;
+                }
+    }
 ?>

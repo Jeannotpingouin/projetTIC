@@ -1,56 +1,76 @@
-<?php
-require_once ("Includes/simplecms-config-sample.php");
-require_once  ("Includes/connectDB.php");
-include("Includes/header.php");
-if(logged_on())  {
-?>
+    <?php 
+        require_once ("Includes/simplecms-config-sample.php"); 
+        require_once  ("Includes/connectDB.php");
+        include("Includes/header.php");  
+
+
+        if(logged_on())  {    
+     ?>
 <div class="container">
-    <h4>Gestion des locataires</h4> <br>
+    <h4>Gestion des syndics</h4> <br>
     <div class=row>
         <fieldset>
-            <legend> Nom / Prénom </legend>
-            <form action="actions/search_locataire.php" method="post">
-                <div class="input-field col s12">
-                    <input id="search" type="search" name="search" required>
-                    <label class="label-icon" for="search"><i class="material-icons">search</i></label>
-                    <i class="material-icons">close</i>
+            <legend> Champs de recherche </legend>
+             <form  id="formSyndic" action="src/ajax/search_syndics.php" method="POST">
+            <table>
+            <tr>
+                <td>
+                 <div class="row">
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">account_circle</i>
+                        <input id="search_nomSyndic" type="text" class="validate" name="search_nomSyndic">
+                        <label for="search_nomSyndic">Nom syndic</label>
+                    </div>
+                       <div class="input-field col s12">
+                        <i class="material-icons prefix">account_circle</i>
+                        <input id="search_emailSyndic" type="text" class="validate" name="search_emailSyndic">
+                        <label for="search_emailSyndic">Email syndic</label>
+                    </div>
+                  
+                    </div>
+                   </td>
+
+                  
+                   </tr>
+                   </table>
+                    <div class="row">
+                     <div class="input-field col s12 center-align ">
+                        <button class="btn waves-effect waves-light " type="submit" name="action" id="rechercherBien">Rechercher
+                        <i class="material-icons right">search</i>
+                        </button>
+                    </div>
+                    </div>
                 </div>
             </form>
         </fieldset>
-    </div>
-    
-    <table class="responsive-table striped">
+
+    <table class="responsive-table striped" id="tableSyndics">
         <thead>
             <tr>
-                <th>Monsieur/Madame</th>
-                <th>Nom</th>
-                <th>Prénom</th>
-                <th>Mail</th>
-                <th>Téléphone</th>
-                <th>Cautionnaire</th>
+                <th>Nom syndic</th>
+                <th>Email syndic</th>    
             </tr>
         </thead>
-        <tbody>
-            <?php
-                    $locataires = show_locataires($databaseConnection);
-                    $locataires->bind_result($civilite,$nom,$prenom,$mail,$tel,$idCautionnaire);
-                    
-                while($locataires->fetch()){
-                    echo "
-                        <tr>
-                            <th>".$civilite."</th>
-                            <th>".$nom."</th>
-                            <th>".$prenom."</th>
-                            <th>".$mail."</th>
-                            <th>".$tel."</th>
-                        </tr>
-                    ";
-                }
-            ?>
+          <tbody id="tbodySyndic">
+
         </tbody>
     </table>
+    <div class="fixed-action-btn horizontal click-to-toggle">
+    <a id="menuBaux" class="btn-floating btn-large red">
+      <i class="material-icons">menu</i>
+    </a>
+    <ul>
+      <li><a class="btn-floating blue darken-4"  id="addSyndic" href="creation-syndics.php"><i class="material-icons">add</i></a></li>
+      <li><a class="btn-floating orange lighten-1" id="editSyndic" ><i class="material-icons">mode_edit</i></a></li>
+      <li><a class="btn-floating red" id="deleteSyndic" ><i class="material-icons">delete</i></a></li>
+    </ul>
+  </div>
 </div>
-<?php
-}
-include ("Includes/footer.php");
-?>
+   
+    
+        <!-- Page Content goes here -->
+
+    <?php 
+    } 
+        include ("Includes/footer.php");
+     ?>

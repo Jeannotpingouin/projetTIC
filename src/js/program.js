@@ -28,6 +28,18 @@
 			            });
  			}
 
+ 			function ajaxDeleteSyndic(identifiant){
+ 				  $.ajax({
+			                url: 'src/ajax/delete_syndics.php', // Le nom du fichier indiqué dans le formulaire
+			                type: 'POST', // La méthode indiquée dans le formulaire (get ou post)
+			                data: 'idSyndics='+identifiant, // Je sérialise les données (j'envoie toutes les valeurs présentes dans le formulaire)
+			                success: function(data,statut) { // Je récupère la réponse du fichier PHP
+			 						if(data == "ok")
+			 							location.reload();
+			                }
+			            });
+ 			}
+
 
             $(document).ready(function() {
     			
@@ -89,6 +101,7 @@
 					 $.clickEdit = null
 				});
 
+
 				$('#deleteBien').on('click',function(e){
 					if(!$(this).hasClass("red")){
 							$(this).addClass("red")
@@ -140,6 +153,57 @@
 				});
 
 
+				$('#deleteSyndic').on('click',function(e){
+					if(!$(this).hasClass("red")){
+							$(this).addClass("red")
+						 $('#editSyndic').removeClass("orange lighten-1")
+						 $('#addSyndic').removeClass("blue darken-4")
+					} else{
+					 $('#editSyndic').toggleClass("orange lighten-1")
+					 $('#addSyndic').toggleClass("blue darken-4")
+					}
+
+					if( $.clickDelete == null){
+						 $.clickDelete = "checked"
+					} else{
+						 $.clickDelete = null
+					}
+					 $.clickEdit = null
+
+				});
+
+
+				$('#editSyndic').on('click',function(e){
+					if(!$(this).hasClass("orange lighten-1")){
+						$(this).addClass("orange lighten-1")
+						$('#deleteSyndic').removeClass("red")
+					 	$('#addSyndic').removeClass("blue darken-4")
+					} else{
+					 $('#deleteSyndic').toggleClass("red")
+					 $('#addSyndic').toggleClass("blue darken-4")
+					}
+
+					if( $.clickEdit == null){
+						 $.clickEdit = "checked"
+					} else{
+						 $.clickEdit = null
+					}
+					 $.clickDelete = null
+				});
+				$('#addSyndic').on('click',function(e){
+					if(!$(this).hasClass("blue darken-4")){
+						$(this).addClass("blue darken-4")
+						$('#deleteSyndic').removeClass("red")
+					 	$('#editSyndic').removeClass("orange lighten-1")
+					} else{
+					 $('#deleteSyndic').toggleClass("red")
+					 $('#editSyndic').toggleClass("orange lighten-1")
+					}
+					 $.clickDelete = null
+					 $.clickEdit = null
+				});
+
+
 				$('#tbodyBail').on('mouseover','tr',function(){
 					if($.clickDelete != null){
 						$(this).addClass("red");
@@ -184,6 +248,31 @@
 						if($.clickEdit != null){
 							var parametre = $.param( { action: "edition", id: $(this).attr("id") },true );
 							window.location =  "/projetTIC/creation-biens.php"+"?"+parametre;
+
+						}
+					});
+
+
+				$('#tbodySyndic').on('mouseover','tr',function(){
+					if($.clickDelete != null){
+						$(this).addClass("red");
+							}
+					if($.clickEdit != null){
+						$(this).addClass("orange");
+					}
+				});
+				$('#tbodySyndic').on('mouseout','tr',function(){
+						$(this).removeClass("red");
+						$(this).removeClass("orange");
+				});
+
+				$("#tbodySyndic").on('click','tr',function() {
+					 	if($.clickDelete != null){
+					 		ajaxDeleteSyndic($(this).attr("id"));
+						}
+						if($.clickEdit != null){
+							var parametre = $.param( { action: "edition", id: $(this).attr("id") },true );
+							window.location =  "/projetTIC/creation-syndics.php"+"?"+parametre;
 
 						}
 					});
@@ -277,6 +366,46 @@
 			                     $.each(JSON.parse(data), function(key, val){
 								 
 				 					$('#tbodyBien').append('<tr id='+val[0]+'><th>'+val[1]+'</th><th>'+val[2]+'</th><th>'+val[3]+'</th><th>'+val[4] + '  ' +val[5]+'</th><th>'+val[6]+'</th><th>'+val[7]+'</th><th>'+val[8]+'</th><th>'+val[9]+'</th></tr>');
+                             
+                        			});
+							  		
+			                }
+			            });
+				});
+
+				 $('#formCreationSyndic').on('submit', function(e) {
+			        e.preventDefault(); // J'empêche le comportement par défaut du navigateur, c-à-d de soumettre le formulaire
+			        var $this = $(this); // L'objet jQuery du formulaire
+			        $formSerialize = $this.serialize();
+					//document.getElementById("formAddBail").reset();
+					$.ajax({
+			                url: $this.attr('action'), // Le nom du fichier indiqué dans le formulaire
+			                type: $this.attr('method'), // La méthode indiquée dans le formulaire (get ou post)
+			                data: $formSerialize, // Je sérialise les données (j'envoie toutes les valeurs présentes dans le formulaire)
+			                success: function(data,statut) { // Je récupère la réponse du fichier PHP
+			         			if(data == "ok"){
+			         					$(location).attr('href', '/projetTIC/creation-et-modif-syndicats.php');
+			         				}
+			                }
+			            });
+		
+				});
+
+				 $('#formSyndic').on('submit', function(e) {
+			        e.preventDefault(); // J'empêche le comportement par défaut du navigateur, c-à-d de soumettre le formulaire
+			        $('#tbodySyndic').empty();
+			        var $this = $(this); // L'objet jQuery du formulaire
+			 	
+			            // Envoi de la requête HTTP en mode asynchrone
+			            $.ajax({
+			                url: $this.attr('action'), // Le nom du fichier indiqué dans le formulaire
+			                type: $this.attr('method'), // La méthode indiquée dans le formulaire (get ou post)
+			                data: $this.serialize(), // Je sérialise les données (j'envoie toutes les valeurs présentes dans le formulaire)
+			                success: function(data,statut) { // Je récupère la réponse du fichier PHP
+			                	 console.log(data);
+			                     $.each(JSON.parse(data), function(key, val){
+								 
+				 					$('#tbodySyndic').append('<tr id='+val[0]+'><th>'+val[1]+'</th><th>'+val[2]+'</th></tr>');
                              
                         			});
 							  		
