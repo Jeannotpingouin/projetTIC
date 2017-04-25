@@ -1,7 +1,6 @@
     <?php 
         require_once ("Includes/simplecms-config-sample.php"); 
         require_once  ("Includes/connectDB.php");
-        require_once ("src/ajax/init_list_biens.php");
         include("Includes/header.php");  
 
 
@@ -12,22 +11,16 @@
     <div class=row>
         <fieldset>
             <legend> Champs de recherche </legend>
-             <form  id="formBail" action="src/ajax/search_biens.php" method="POST">
+             <form  id="formBien" action="src/ajax/search_biens.php" method="POST">
             <table>
             <tr>
             	<td>
             	 <div class="row">
                     <div class="input-field col s12">
                         <i class="material-icons prefix">account_circle</i>
-                        <input id="search_nomLocataire" type="text" class="validate" name="search_nomLocataire">
+                        <input id="search_nomLocataire" type="text" class="validate" name="search_nomProprietaire">
                         <label for="search_nomLocataire">Nom propriétaire</label>
                     </div>
-                    <div class="input-field col s12">
-                        <i class="material-icons prefix">account_circle</i>
-                        <input id="search_nomCautionnaire" type="text" class="validate" name="search_nomCautionnaire">
-                        <label for="search_nomCautionnaire">Nom du cautionnaire</label>
-                    </div>
-                 
                         <div class="input-field col s12">
                             <i class="material-icons prefix">navigation</i>
                             <input id="search_rue" type="text" class="validate" name="search_rue">
@@ -49,33 +42,27 @@
 
                    <td>
             	 <div class="row">
-                    <div class="input-field col s12">
-              
-                            <input id="search_codePostal" type="text" class="validate" name="search_codePostal">
-                            <label for="search_codePostal">Syndicat</label>
-                        </div>
                         <div class="input-field col s12">
-              
-                            <input id="search_codePostal" type="text" class="validate" name="search_codePostal">
-                            <label for="search_codePostal">Superficie min</label>
-                        </div>
-                        <div class="input-field col s12">
-              
-                            <input id="search_codePostal" type="text" class="validate" name="search_codePostal">
-                            <label for="search_codePostal">Superficie max</label>
-                        </div>
-
-                   	 <div class="input-field col s12">
-              
-                            <input id="search_codePostal" type="text" class="validate" name="search_codePostal">
-                            <label for="search_codePostal">Prix min</label>
+                            <input id="search_codePostal" type="text" class="validate" name="search_nbC">
+                            <label for="search_codePostal">Nombre chambres</label>
                         </div>
 
                          <div class="input-field col s12">
               
-                            <input id="search_codePostal" type="text" class="validate" name="search_codePostal">
-                            <label for="search_codePostal">Prix max</label>
+                            <input id="search_codePostal" type="text" class="validate" name="search_nbP">
+                            <label for="search_codePostal">Nombre pièces</label>
                         </div>
+                        <div class="input-field col s12">
+              
+                            <input id="search_codePostal" type="text" class="validate" name="search_supMin">
+                            <label for="search_codePostal">Superficie min</label>
+                        </div>
+                        <div class="input-field col s12">
+              
+                            <input id="search_codePostal" type="text" class="validate" name="search_supMax">
+                            <label for="search_codePostal">Superficie max</label>
+                        </div>
+
                     </div>
                     </div>
                    </td>
@@ -91,33 +78,34 @@
                 </div>
             </form>
         </fieldset>
-        <div class="input-field col s12 center-align ">
-             <button class="btn waves-effect waves-light " id="ajouterBien" onclick="window.open('/projetTIC/creation-biens.php')">Ajouter
-                <i class="material-icons right">playlist_add</i>
-            </button>
-        </div>
 
     <table class="responsive-table striped" id="tableBiens">
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Propriétaire</th>
                 <th>Superficie</th>
-                <th>Prix</th>
                 <th>Nb pièces</th>
                 <th>Nb chambres</th>
-                <th>Etage</th>
-                <th>Adresse</th>
-                <th>Ville</th>
-                <th>Etat</th>    
-                <th>Locataire</th>   
-                 <th>Syndicat</th>     
+                <th>Propriétaire</th>
+                <th>Rue</th>
+                <th>Code Postal</th>
+                <th>Ville</th>   
+                <th>Syndicat</th>     
             </tr>
         </thead>
-        <tbody>
+          <tbody id="tbodyBien">
 
         </tbody>
     </table>
+    <div class="fixed-action-btn horizontal click-to-toggle">
+    <a id="menuBaux" class="btn-floating btn-large red">
+      <i class="material-icons">menu</i>
+    </a>
+    <ul>
+      <li><a class="btn-floating blue darken-4"  id="addBien" href="creation-biens.php"><i class="material-icons">add</i></a></li>
+      <li><a class="btn-floating orange lighten-1" id="editBien" ><i class="material-icons">mode_edit</i></a></li>
+      <li><a class="btn-floating red" id="deleteBien" ><i class="material-icons">delete</i></a></li>
+    </ul>
+  </div>
 </div>
    
     

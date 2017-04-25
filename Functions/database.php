@@ -78,7 +78,7 @@
         
                 if( $statement_check_bail_exists->num_rows != 0)
                 {               
-                            $query_show_bail = "SELECT l.ID,loc.nom, loc.prenom,loc.tel, loc.mail,c.nom,c.prenom,c.tel,c.mail, a.rue, a.codePostal,a.ville,DATE_FORMAT(l.dateDebut,'%m-%d-%Y'), DATE_FORMAT(l.dateFin,'%m-%d-%Y')
+                            $query_show_bail = "SELECT l.ID,loc.nom, loc.prenom,loc.tel, loc.mail,c.nom,c.prenom,c.tel,c.mail, a.rue, a.codePostal,a.ville, DATE_FORMAT(l.dateDebut,'%m-%d-%Y'), DATE_FORMAT(l.dateFin,'%m-%d-%Y')
                                         FROM louer l, locataire loc,bien b, cautionnaire c, adresse a
                                         WHERE l.idLocataire = loc.ID and ((loc.idCautionnaire iS NULL) OR (c.ID = loc.idCautionnaire)) and l.idBien = b.ID and  b.idAdresse = a.ID";
                             if (!empty($nomLoc)) {
@@ -109,7 +109,56 @@
 
     }
 
+    function show_bien($databaseConnection,$nomProprietaire,$rue,$ville,$codePostal, $nbPieces, $nbChambres, $superficieMin, $superficieMax)
+    {  
+        $query_check_bien_exists = "SELECT * FROM bien";
+        $statement_check_bien_exists = $databaseConnection->query($query_check_bien_exists);
+        
+                if( $statement_check_bien_exists->num_rows != 0)
+                {               
+                            $query_show_bien = "SELECT b.ID, b.superficie, b.nbPiece, b.nbChambre, p.nom, p.prenom, a.rue, a.codePostal, a.ville, s.nom
+                                        FROM proprietaire p, bien b, adresse a, syndicat_copro s
+                                        WHERE b.idProprietaire = p.ID AND b.idAdresse = a.ID";
+                            if (!empty($nomProprietaire)) {
+                                 $query_show_bien .= " AND ";
+                                 $query_show_bien .= "p.nom= '$nomProprietaire'";
+                            }
+                             if (!empty($nbPieces)) {
+                                 $query_show_bien .= " AND ";
+                                 $query_show_bien .= "b.nbPiece= '$nbPieces'";
+                            }
+                             if (!empty($nbChambres)) {
+                                 $query_show_bien .= " AND ";
+                                 $query_show_bien .= "b.nbChambre = '$nbChambres'";
+                            }
+                             if (!empty($superficieMin)) {
+                                 $query_show_bien .= " AND ";
+                                 $query_show_bien .= "b.superficie > '$superficieMin'";
+                            }
+                            if (!empty($superficieMax)) {
+                                 $query_show_bien .= " AND ";
+                                 $query_show_bien .= "b.superficie < '$superficieMax'";
+                            }
+                            if (!empty($rue)) {
+                                 $query_show_bien .= " AND ";
+                                 $query_show_bien .= "a.rue= '$rue'";
+                            }
+                            if (!empty($ville)) {
+                                 $query_show_bien .= " AND ";
+                                 $query_show_bien .= "a.ville = '$ville'";
+                            }
+                            if (!empty($codePostal)) {
+                                 $query_show_bien .= " AND ";
+                                 $query_show_bien .= "a.codePostal = '$codePostal'";
+                            }
 
+                            $query_show_bien .= " GROUP BY b.ID";
+            
+                    $statement_show_biens = $databaseConnection->query($query_show_bien); 
+                    return $statement_show_biens->fetch_all();
+             }
+
+    }
 
 function delete_bail($databaseConnection,$identifiant)
     {
@@ -152,6 +201,26 @@ function delete_bail($databaseConnection,$identifiant)
                     return "ok";
 
              }
+
+    }
+
+    function delete_bien($databaseConnection,$identifiant)
+    {
+
+        $query_check_bien_exists = "SELECT * FROM bien where ID = ?";
+        $statement_check_bien_exists = $databaseConnection->prepare($query_check_bien_exists);
+        $statement_check_bien_exists->bind_param('s', $identifiant);
+        $statement_check_bien_exists->execute();
+        $statement_check_bien_exists->store_result();
+        
+                if( $statement_check_bien_exists->num_rows != 0)
+                {  
+
+                    $query_delete_bien = "DELETE FROM bien WHERE ID=".$identifiant;
+                    $databaseConnection->query($query_delete_bien); 
+
+                    return "ok";
+                }
 
     }
 
@@ -228,6 +297,73 @@ else if($action == "edition"){
 
 }
 
+function add_edit_biens($databaseConnection,$action,$superficieBien,$nbPiecesBien,$nbChambresBien,$etageBien,$descriptionBien,$rueBien,$complementAdresseBien,$codePostalBien,$villeBien,$nomSyndicBien,$mailSyndicBien,$civilitePBien,$namePBien,$prenomPBien,$numTelPBien,$mailPBien,$ruePBien,$codePostalPBien,$villePBien,$complementAdressePBien,$idSelected){
+
+    if($action == "insert"){
+        $queryInsertAdresseBien = "INSERT IGNORE INTO adresse VALUES(NULL, '$rueBien', '$complementAdresseBien', '$codePostalBien', '$villeBien')";
+        $databaseConnection->query($queryInsertAdresseBien);
+
+        $queryInsertAdresseProprio = "INSERT IGNORE INTO adresse VALUES(NULL, '$ruePBien', '$complementAdressePBien', '$codePostalPBien', '$villePBien')";
+        $databaseConnection->query($queryInsertAdresseProprio);
+
+        $idAdresseProprio = NULL;
+        $idAdresseBien = null;
+
+        $getIdAdresseBien = "SELECT ID from adresse where rue='$rueBien' and complement='$complementAdresseBien' and codePostal='$codePostalBien' and ville='$villeBien'";
+        $getIdAdresseProprio = "SELECT ID from adresse where rue='$ruePBien' and complement='$complementAdressePBien' and codePostal='$codePostalPBien' and ville='$villePBien'";
+
+        $idAdresseProprio = json_encode(intval($databaseConnection->query($getIdAdresseProprio)->fetch_all()[0][0]));
+        $idAdresseBien = json_encode(intval($databaseConnection->query($getIdAdresseBien)->fetch_all()[0][0]));
+
+        $queryInsertProprio = "INSERT IGNORE INTO proprietaire VALUE(NULL, '$civilitePBien', '$namePBien', '$prenomPBien','$mailPBien', '$numTelPBien', '$idAdresseProprio')";
+        $databaseConnection->query($queryInsertProprio);
+
+        $idProprio = null;
+        $getIdProprio ="SELECT ID from proprietaire where civilite='$civilitePBien' and nom='$namePBien' and prenom='$prenomPBien' and mail='$mailPBien' and tel = '$numTelPBien' and idAdresse='$idAdresseProprio'";
+
+        $idProprio = json_encode(intval($databaseConnection->query($getIdProprio)->fetch_all()[0][0]));
+
+        $queryInsertBien = "INSERT IGNORE INTO bien VALUE(NULL, '$superficieBien', '$nbPiecesBien', '$nbChambresBien','$etageBien', '$descriptionBien', '$idProprio', '$idAdresseBien')";
+        $databaseConnection->query($queryInsertBien);
+
+        $queryInsertSyndicat = "INSERT IGNORE INTO syndicat_copro VALUE(NULL, '$nomSyndicBien', '$mailSyndicBien')";
+        $databaseConnection->query($queryInsertSyndicat);
+
+        return "ok";
+    }
+
+    else if($action == "edition"){
+        $query_id_bien = "UPDATE bien SET superficie = $superficieBien, nbPiece = '$nbPiecesBien', nbChambre = '$nbChambresBien', etage = '$etageBien', description = '$descriptionBien' where ID =".$idSelected;
+        $statement_id_bien = $databaseConnection->query($query_id_bien);
+        
+        $query_id_adresse_bien = "SELECT idAdresse from bien where ID = ".$idSelected;
+        $statement_id_adresse_bien = $databaseConnection->query($query_id_adresse_bien);
+        $row = $statement_id_adresse_bien->fetch_row();
+        $idAdresseBien = $row[0];
+
+        $query_update_adresse_bien = "UPDATE adresse set rue = '$rueBien', codePostal='$codePostalBien', ville='$villeBien', complement='$complementAdresseBien' where ID =".$idAdresseBien;
+        $statement_query_update_adresse_bien = $databaseConnection->query($query_update_adresse_bien);
+
+        $query_id_proprietaire = "SELECT idProprietaire from bien where ID =".$idSelected;
+        $statement_id_proprietaire = $databaseConnection->query($query_id_proprietaire);
+        $row = $statement_id_proprietaire->fetch_row();
+        $idProprietaire = $row[0];
+
+        $query_update_proprietaire = "UPDATE proprietaire set civilite = '$civilitePBien', nom = '$namePBien', prenom='$prenomPBien', tel='$numTelPBien', mail = '$mailPBien' where ID =".$idProprietaire;
+        $statement_update_proprietaire = $databaseConnection->query($query_update_proprietaire);
+
+        $query_id_adresse_proprietaire = "SELECT idAdresse from proprietaire where ID = ".$idProprietaire;
+        $statement_id_adresse_proprietaire = $databaseConnection->query($query_id_adresse_proprietaire);
+        $row = $statement_id_adresse_proprietaire->fetch_row();
+        $idAdresseProprietaire = $row[0];
+
+        $query_update_adresse_proprietaire = "UPDATE adresse set rue = '$ruePBien', codePostal='$codePostalPBien', ville='$villePBien', complement='$complementAdressePBien' where ID =".$idAdresseProprietaire;
+        $statement_query_update_adresse_proprietaire = $databaseConnection->query($query_update_adresse_proprietaire);
+
+        return "ok";
+    }
+}
+
 
 function search_baux($databaseConnection,$identifiant){
         //Permet de vérifier l'existence d'un bail pour l'identifiant passe en parametre
@@ -279,7 +415,6 @@ function search_baux($databaseConnection,$identifiant){
 
                     $query_adresse = "SELECT rue,complement,codePostal,ville FROM adresse WHERE ID=".$idAdresse;
                     $statement_adresse = $databaseConnection->query($query_adresse);
-                    $row = $statement_adresse->fetch_row();
                     $rueCautionnaire = $row[0];
                     $complementCautionnaire = $row[1];
                     $codePostalCautionnaire = $row[2];
@@ -292,8 +427,64 @@ function search_baux($databaseConnection,$identifiant){
                     return $donnees_bail;
 
                 }
+}
 
+function search_biens($databaseConnection,$identifiant){
+        //Permet de vérifier l'existence d'un bail pour l'identifiant passe en parametre
+        $query_check_bien_exists = "SELECT * FROM bien where ID = ?";
+        $statement_check_bien_exists = $databaseConnection->prepare($query_check_bien_exists);
+        $statement_check_bien_exists->bind_param('s', $identifiant);
+        $statement_check_bien_exists->execute();
+        $statement_check_bien_exists->store_result();
+        
+        //initialisaion de mon tableau qui va contenir toutes les données du formulaire
+        $donnees_bien = array();
 
+                if( $statement_check_bien_exists->num_rows != 0)
+                {          
+                     //recuperer les donnees dans la table louer 
+                    $query_id_locataire = "SELECT ID,superficie, nbPiece, nbChambre, etage, description, idProprietaire, idAdresse FROM bien WHERE ID=".$identifiant;
+                    $statement_id_locataire = $databaseConnection->query($query_id_locataire);
+                    $row = $statement_id_locataire->fetch_row();
+                    $superficie = json_encode($row[1]);
+                    $nbPiece = json_encode($row[2]);
+                    $nbChambre = json_encode($row[3]);
+                    $etage = json_encode($row[4]);
+                    $description = json_encode($row[5]);
+                    $idProprietaire = json_encode($row[6]);
+                    $idAdresseB = json_encode($row[7]);
+                   
+                    $query_adresse_bien = "SELECT rue, codePostal, ville, complement FROM adresse WHERE ID=".$idAdresseB;
+                    $statement_adresse_bien = $databaseConnection->query($query_adresse_bien);
+                    $row = $statement_adresse_bien->fetch_row();
+                    $rueB = json_encode($row[0]);
+                    $codePostalB = json_encode($row[1]);
+                    $villeB = json_encode($row[2]);
+                    $complementB = json_encode($row[3]);
 
+                    $query_proprietaire = "SELECT civilite, nom, prenom, tel, mail, idAdresse from proprietaire where ID =".$idProprietaire;
+                    $statement_proprietaire = $databaseConnection->query($query_proprietaire);
+                    $row = $statement_proprietaire->fetch_row();
+                    $civiliteP = json_encode($row[0]);
+                    $nomP = json_encode($row[1]);
+                    $prenomP = json_encode($row[2]);
+                    $telP = json_encode($row[3]);
+                    $mailP = json_encode($row[4]);
+                    $idAdresseP =json_encode($row[5]);
+
+                    $query_adresse_proprietaire = "SELECT rue, codePostal, ville, complement FROM adresse WHERE ID=".$idAdresseP;
+                    $statement_adresse_proprietaire = $databaseConnection->query($query_adresse_proprietaire);
+                    $row = $statement_adresse_proprietaire->fetch_row();
+                    $rueP = json_encode($row[0]);
+                    $codePostalP =json_encode($row[1]);
+                    $villeP = json_encode($row[2]);
+                    $complementP = json_encode($row[3]);
+
+                    array_push($donnees_bien, $superficie,$nbPiece,$nbChambre,$etage,$description,$rueB, $codePostalB,$villeB,$complementB,
+                        $civiliteP,$nomP,$prenomP,$telP,$mailP,$rueP,$codePostalP,$villeP,$complementP);
+
+                    return $donnees_bien;
+
+                }
 }
 ?>
