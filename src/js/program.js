@@ -343,7 +343,6 @@
 			                success: function(data,statut) { // Je récupère la réponse du fichier PHP
 			                	console.log(data);
 			         			if(data == "ok"){
-			         				console.log("gfefbe");
 			         					$(location).attr('href', '/projetTIC/creation-et-modif-biens.php');
 			         				}
 			                }
@@ -365,7 +364,7 @@
 			                 	console.log(data);
 			                     $.each(JSON.parse(data), function(key, val){
 								 
-				 					$('#tbodyBien').append('<tr id='+val[0]+'><th>'+val[1]+'</th><th>'+val[2]+'</th><th>'+val[3]+'</th><th>'+val[4] + '  ' +val[5]+'</th><th>'+val[6]+'</th><th>'+val[7]+'</th><th>'+val[8]+'</th><th>'+val[9]+'</th></tr>');
+				 					$('#tbodyBien').append('<tr id='+val[0]+'><th>'+val[1]+'</th><th>'+val[2]+'</th><th>'+val[3]+'</th><th>'+val[4] + '  ' +val[5]+'</th><th>'+val[6]+'</th><th>'+val[7]+'</th><th>'+val[8]+'</th><th>'+val[9]+'</th><th>'+val[10]+'</th></tr>');
                              
                         			});
 							  		

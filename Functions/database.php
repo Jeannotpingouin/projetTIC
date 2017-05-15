@@ -116,9 +116,9 @@
         
                 if( $statement_check_bien_exists->num_rows != 0)
                 {               
-                            $query_show_bien = "SELECT b.ID, b.superficie, b.nbPiece, b.nbChambre, p.nom, p.prenom, a.rue, a.codePostal, a.ville, s.nom
+                            $query_show_bien = "SELECT b.ID, b.superficie, b.nbPiece, b.nbChambre, p.nom, p.prenom, a.rue, a.codePostal, a.ville, s.nom, s.mail
                                         FROM proprietaire p, bien b, adresse a, syndicat_copro s
-                                        WHERE b.idProprietaire = p.ID AND b.idAdresse = a.ID";
+                                        WHERE b.idProprietaire = p.ID AND b.idAdresse = a.ID AND b.idSyndic = s.ID";
                             if (!empty($nomProprietaire)) {
                                  $query_show_bien .= " AND ";
                                  $query_show_bien .= "p.nom= '$nomProprietaire'";
@@ -373,11 +373,15 @@ function add_edit_biens($databaseConnection,$action,$superficieBien,$nbPiecesBie
 
         $idProprio = json_encode(intval($databaseConnection->query($getIdProprio)->fetch_all()[0][0]));
 
-        $queryInsertBien = "INSERT IGNORE INTO bien VALUE(NULL, '$superficieBien', '$nbPiecesBien', '$nbChambresBien','$etageBien', '$descriptionBien', '$idProprio', '$idAdresseBien')";
-        $databaseConnection->query($queryInsertBien);
-
         $queryInsertSyndicat = "INSERT IGNORE INTO syndicat_copro VALUE(NULL, '$nomSyndicBien', '$mailSyndicBien')";
         $databaseConnection->query($queryInsertSyndicat);
+
+        $idSyndic = null;
+        $getIdSyndic = "SELECT ID from syndicat_copro where nom='$nomSyndicBien' and mail='$mailSyndicBien'";
+
+        $idSyndic = json_encode(intval($databaseConnection->query($getIdSyndic)->fetch_all()[0][0]));
+        $queryInsertBien = "INSERT IGNORE INTO bien VALUE(NULL, '$superficieBien', '$nbPiecesBien', '$nbChambresBien','$etageBien', '$descriptionBien', '$idProprio', '$idAdresseBien', '$idSyndic')";
+        $databaseConnection->query($queryInsertBien);
 
         return "ok";
     }
@@ -409,6 +413,14 @@ function add_edit_biens($databaseConnection,$action,$superficieBien,$nbPiecesBie
 
         $query_update_adresse_proprietaire = "UPDATE adresse set rue = '$ruePBien', codePostal='$codePostalPBien', ville='$villePBien', complement='$complementAdressePBien' where ID =".$idAdresseProprietaire;
         $statement_query_update_adresse_proprietaire = $databaseConnection->query($query_update_adresse_proprietaire);
+
+        $query_id_syndic = "SELECT idSyndic from bien where ID = ".$idSelected;
+        $statement_id_syndic = $databaseConnection->query($query_id_syndic);
+        $row = $statement_id_syndic->fetch_row();
+        $idSyndicBien = $row[0];
+
+        $query_update_syndic_bien = "UPDATE syndicat_copro set nom = '$nomSyndicBien', mail = '$mailSyndicBien' where ID = ".$idSyndicBien;
+        $statement_query_update_syndic = $databaseConnection->query($query_update_syndic_bien);
 
         return "ok";
     }
@@ -450,8 +462,8 @@ function search_baux($databaseConnection,$identifiant){
                     $query_id_locataire = "SELECT idLocataire,idBien,dateDebut,dateFin FROM louer WHERE ID=".$identifiant;
                     $statement_id_locataire = $databaseConnection->query($query_id_locataire);
                     $row = $statement_id_locataire->fetch_row();
-                    $idLocataire = $row[0];
-                    $idBien = $row[1];
+                    $idLocataire = json_encode($row[0], JSON_UNESCAPED_UNICODE);
+                    $idBien = json_encode($row[1], JSON_UNESCAPED_UNICODE);
                     //date debut & date fin du bail
                     $dateDebut = strtotime($row[2]);
                     $dateDebut = date('d F, Y',$dateDebut);
@@ -461,32 +473,32 @@ function search_baux($databaseConnection,$identifiant){
                     $query_id_cautionnaire = "SELECT idCautionnaire,nom,prenom,mail,tel FROM locataire WHERE ID=".$idLocataire;
                     $statement_id_cautionnaire = $databaseConnection->query($query_id_cautionnaire);
                     $row = $statement_id_cautionnaire->fetch_row();
-                    $idCautionnaire = $row[0];
+                    $idCautionnaire = json_encode($row[0], JSON_UNESCAPED_UNICODE);
 
                     //nom,prenom, mail & telephone du locataire
-                    $nomLocataire = $row[1];
-                    $prenomLocataire = $row[2];
-                    $mailLocataire = $row[3];
-                    $telLocataire = $row[4];
+                    $nomLocataire = json_encode($row[1], JSON_UNESCAPED_UNICODE);
+                    $prenomLocataire = json_encode($row[2], JSON_UNESCAPED_UNICODE);
+                    $mailLocataire = json_encode($row[3], JSON_UNESCAPED_UNICODE);
+                    $telLocataire = json_encode($row[4], JSON_UNESCAPED_UNICODE);
 
                     //selection idAdresse dans la table cautionnaire
                     $query_id_adresse = "SELECT idAdresse,nom,prenom,mail,tel FROM cautionnaire WHERE ID=".$idCautionnaire;
                     $statement_id_adresse = $databaseConnection->query($query_id_adresse);
                     $row = $statement_id_adresse->fetch_row();
-                    $idAdresse = $row[0];  
+                    $idAdresse = json_encode($row[0], JSON_UNESCAPED_UNICODE);
 
                     //nom,prenom, mail & telephone du cautionnaire
-                    $nomCautionnaire = $row[1];
-                    $prenomCautionnaire = $row[2];
-                    $mailCautionnaire = $row[3];
-                    $telCautionnaire = $row[4];
+                    $nomCautionnaire = json_encode($row[1], JSON_UNESCAPED_UNICODE);
+                    $prenomCautionnaire = json_encode($row[2], JSON_UNESCAPED_UNICODE);
+                    $mailCautionnaire = json_encode($row[3], JSON_UNESCAPED_UNICODE);
+                    $telCautionnaire = json_encode($row[4], JSON_UNESCAPED_UNICODE);
 
                     $query_adresse = "SELECT rue,complement,codePostal,ville FROM adresse WHERE ID=".$idAdresse;
                     $statement_adresse = $databaseConnection->query($query_adresse);
-                    $rueCautionnaire = $row[0];
-                    $complementCautionnaire = $row[1];
-                    $codePostalCautionnaire = $row[2];
-                    $villeCautionnaire = $row[3];
+                    $rueCautionnaire = json_encode($row[0], JSON_UNESCAPED_UNICODE);
+                    $complementCautionnaire = json_encode($row[1], JSON_UNESCAPED_UNICODE);
+                    $codePostalCautionnaire = json_encode($row[2], JSON_UNESCAPED_UNICODE);
+                    $villeCautionnaire = json_encode($row[3], JSON_UNESCAPED_UNICODE);
 
                     array_push($donnees_bail,$nomLocataire,$prenomLocataire,$telLocataire,$mailLocataire,$dateDebut,$dateFin,
                         $idBien,$nomCautionnaire,$prenomCautionnaire,$telCautionnaire,$mailCautionnaire,$rueCautionnaire,
@@ -511,44 +523,53 @@ function search_biens($databaseConnection,$identifiant){
                 if( $statement_check_bien_exists->num_rows != 0)
                 {          
                      //recuperer les donnees dans la table louer 
-                    $query_id_locataire = "SELECT ID,superficie, nbPiece, nbChambre, etage, description, idProprietaire, idAdresse FROM bien WHERE ID=".$identifiant;
+                    $query_id_locataire = "SELECT ID,superficie, nbPiece, nbChambre, etage, description, idProprietaire, idAdresse, idSyndic FROM bien WHERE ID=".$identifiant;
                     $statement_id_locataire = $databaseConnection->query($query_id_locataire);
                     $row = $statement_id_locataire->fetch_row();
-                    $superficie = json_encode($row[1]);
-                    $nbPiece = json_encode($row[2]);
-                    $nbChambre = json_encode($row[3]);
-                    $etage = json_encode($row[4]);
-                    $description = json_encode($row[5]);
-                    $idProprietaire = json_encode($row[6]);
-                    $idAdresseB = json_encode($row[7]);
+                    $superficie = json_encode($row[1], JSON_UNESCAPED_UNICODE);
+                    $nbPiece = json_encode($row[2], JSON_UNESCAPED_UNICODE);
+                    $nbChambre = json_encode($row[3], JSON_UNESCAPED_UNICODE);
+                    $etage = json_encode($row[4], JSON_UNESCAPED_UNICODE);
+                    $description = json_encode($row[5], JSON_UNESCAPED_UNICODE);
+                    $idProprietaire = json_encode($row[6], JSON_UNESCAPED_UNICODE);
+                    $idAdresseB = json_encode($row[7], JSON_UNESCAPED_UNICODE);
+                    $idSyndic = json_encode($row[8], JSON_UNESCAPED_UNICODE);
                    
                     $query_adresse_bien = "SELECT rue, codePostal, ville, complement FROM adresse WHERE ID=".$idAdresseB;
                     $statement_adresse_bien = $databaseConnection->query($query_adresse_bien);
                     $row = $statement_adresse_bien->fetch_row();
-                    $rueB = json_encode($row[0]);
-                    $codePostalB = json_encode($row[1]);
-                    $villeB = json_encode($row[2]);
-                    $complementB = json_encode($row[3]);
+                    $rueB = json_encode($row[0], JSON_UNESCAPED_UNICODE);
+                    $codePostalB = json_encode($row[1], JSON_UNESCAPED_UNICODE);
+                    $villeB = json_encode($row[2], JSON_UNESCAPED_UNICODE);
+                    $complementB = json_encode($row[3], JSON_UNESCAPED_UNICODE);
 
                     $query_proprietaire = "SELECT civilite, nom, prenom, tel, mail, idAdresse from proprietaire where ID =".$idProprietaire;
                     $statement_proprietaire = $databaseConnection->query($query_proprietaire);
                     $row = $statement_proprietaire->fetch_row();
-                    $civiliteP = json_encode($row[0]);
-                    $nomP = json_encode($row[1]);
-                    $prenomP = json_encode($row[2]);
-                    $telP = json_encode($row[3]);
-                    $mailP = json_encode($row[4]);
-                    $idAdresseP =json_encode($row[5]);
+                    $civiliteP = json_encode($row[0], JSON_UNESCAPED_UNICODE);
+                    $nomP = json_encode($row[1], JSON_UNESCAPED_UNICODE);
+                    $prenomP = json_encode($row[2], JSON_UNESCAPED_UNICODE);
+                    $telP = json_encode($row[3], JSON_UNESCAPED_UNICODE);
+                    $mailP = json_encode($row[4], JSON_UNESCAPED_UNICODE);
+                    $idAdresseP =json_encode($row[5], JSON_UNESCAPED_UNICODE);
 
                     $query_adresse_proprietaire = "SELECT rue, codePostal, ville, complement FROM adresse WHERE ID=".$idAdresseP;
                     $statement_adresse_proprietaire = $databaseConnection->query($query_adresse_proprietaire);
                     $row = $statement_adresse_proprietaire->fetch_row();
-                    $rueP = json_encode($row[0]);
-                    $codePostalP =json_encode($row[1]);
-                    $villeP = json_encode($row[2]);
-                    $complementP = json_encode($row[3]);
+                    $rueP = json_encode($row[0], JSON_UNESCAPED_UNICODE);
+                    $codePostalP =json_encode($row[1], JSON_UNESCAPED_UNICODE);
+                    $villeP = json_encode($row[2], JSON_UNESCAPED_UNICODE);
+                    $complementP = json_encode($row[3], JSON_UNESCAPED_UNICODE);
 
-                    array_push($donnees_bien, $superficie,$nbPiece,$nbChambre,$etage,$description,$rueB, $codePostalB,$villeB,$complementB,
+              
+                    $query_syndic_bien = "SELECT nom, mail FROM syndicat_copro WHERE ID=".$idSyndic;
+                    $statement_syndic_bien = $databaseConnection->query($query_syndic_bien);
+                    $row = $statement_syndic_bien->fetch_row();
+                    $nomSyndic = json_encode($row[0], JSON_UNESCAPED_UNICODE);
+                    $mailSyndic = json_encode($row[1], JSON_UNESCAPED_UNICODE);
+
+               
+                    array_push($donnees_bien, $superficie,$nbPiece,$nbChambre,$etage,$description,$rueB, $codePostalB,$villeB,$complementB,$nomSyndic, $mailSyndic,
                         $civiliteP,$nomP,$prenomP,$telP,$mailP,$rueP,$codePostalP,$villeP,$complementP);
 
                     return $donnees_bien;
