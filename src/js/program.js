@@ -1,7 +1,7 @@
  			$(".button-collapse").sideNav();
         	$.clickDelete = null;
             	$.clickEdit = null;
-            
+
 
 
  			function ajaxDeleteBaux(identifiant){
@@ -42,15 +42,15 @@
 
 
             $(document).ready(function() {
-    			
-  					
+
+
 				  $('.datepicker').pickadate({
 				    selectMonths: true, // Creates a dropdown to control month
 				    selectYears: 15,
 				    formatSubmit: 'yyyy-mm-dd'
 				  })
-			
-				  
+
+
 				$('#deleteBaux').on('click',function(e){
 					if(!$(this).hasClass("red")){
 							$(this).addClass("red")
@@ -223,7 +223,7 @@
 						}
 						if($.clickEdit != null){
 							var parametre = $.param( { action: "edition", id: $(this).attr("id") },true );
-							window.location =  "/projetTIC/creation-baux.php"+"?"+parametre;
+							window.location =  "/creation-baux.php"+"?"+parametre;
 
 						}
 					});
@@ -247,7 +247,7 @@
 						}
 						if($.clickEdit != null){
 							var parametre = $.param( { action: "edition", id: $(this).attr("id") },true );
-							window.location =  "/projetTIC/creation-biens.php"+"?"+parametre;
+							window.location =  "/creation-biens.php"+"?"+parametre;
 
 						}
 					});
@@ -272,7 +272,7 @@
 						}
 						if($.clickEdit != null){
 							var parametre = $.param( { action: "edition", id: $(this).attr("id") },true );
-							window.location =  "/projetTIC/creation-syndics.php"+"?"+parametre;
+							window.location =  "/creation-syndics.php"+"?"+parametre;
 
 						}
 					});
@@ -284,20 +284,20 @@
 			        e.preventDefault(); // J'empêche le comportement par défaut du navigateur, c-à-d de soumettre le formulaire
 			        $('#tbodyBail').empty();
 			        var $this = $(this); // L'objet jQuery du formulaire
-			 	
+
 			            // Envoi de la requête HTTP en mode asynchrone
 			            $.ajax({
 			                url: $this.attr('action'), // Le nom du fichier indiqué dans le formulaire
 			                type: $this.attr('method'), // La méthode indiquée dans le formulaire (get ou post)
 			                data: $this.serialize(), // Je sérialise les données (j'envoie toutes les valeurs présentes dans le formulaire)
 			                success: function(data,statut) { // Je récupère la réponse du fichier PHP
-			      
+
 			                     $.each(JSON.parse(data), function(key, val){
-									
+
 				 					$('#tbodyBail').append('<tr id='+val[0]+'><th>'+val[1]+' '+val[2]+'</th><th>'+val[3]+'</th><th>'+val[4]+'</th><th>'+val[5]+' '+val[6]+'</th><th>'+val[7]+'</th><th>'+val[8]+'</th><th>'+val[9]+'</th><th>'+val[11]+'-'+val[10]+'</th><th>'+val[12]+'</th><th>'+val[13]+'</th></tr>');
-                             
+
                         			});
-							  		
+
 			                }
 			            });
 				});
@@ -314,7 +314,7 @@
 					var myObject = {
 						add_edit_bienLocataire : id
 					};
-				
+
 					$formSerialize = $this.serialize() + "&" + $.param(myObject);
 					//document.getElementById("formAddBail").reset();
 					$.ajax({
@@ -323,11 +323,11 @@
 			                data: $formSerialize, // Je sérialise les données (j'envoie toutes les valeurs présentes dans le formulaire)
 			                success: function(data,statut) { // Je récupère la réponse du fichier PHP
 			         			if(data == "ok"){
-			         					$(location).attr('href', '/projetTIC/creation-et-modif-bail.php');
+			         					$(location).attr('href', '/creation-et-modif-bail.php');
 			         				}
 			                }
 			            });
-		
+
 				});
 
 			    $('#formCreationBien').on('submit', function(e) {
@@ -344,18 +344,18 @@
 			                	console.log(data);
 			         			if(data == "ok"){
 			         				console.log("gfefbe");
-			         					$(location).attr('href', '/projetTIC/creation-et-modif-biens.php');
+			         					$(location).attr('href', '/creation-et-modif-biens.php');
 			         				}
 			                }
 			            });
-		
+
 				});
 
 				 $('#formBien').on('submit', function(e) {
 			        e.preventDefault(); // J'empêche le comportement par défaut du navigateur, c-à-d de soumettre le formulaire
 			        $('#tbodyBien').empty();
 			        var $this = $(this); // L'objet jQuery du formulaire
-			 	
+
 			            // Envoi de la requête HTTP en mode asynchrone
 			            $.ajax({
 			                url: $this.attr('action'), // Le nom du fichier indiqué dans le formulaire
@@ -364,11 +364,11 @@
 			                success: function(data,statut) { // Je récupère la réponse du fichier PHP
 			                 	console.log(data);
 			                     $.each(JSON.parse(data), function(key, val){
-								 
+
 				 					$('#tbodyBien').append('<tr id='+val[0]+'><th>'+val[1]+'</th><th>'+val[2]+'</th><th>'+val[3]+'</th><th>'+val[4] + '  ' +val[5]+'</th><th>'+val[6]+'</th><th>'+val[7]+'</th><th>'+val[8]+'</th><th>'+val[9]+'</th></tr>');
-                             
+
                         			});
-							  		
+
 			                }
 			            });
 				});
@@ -384,18 +384,18 @@
 			                data: $formSerialize, // Je sérialise les données (j'envoie toutes les valeurs présentes dans le formulaire)
 			                success: function(data,statut) { // Je récupère la réponse du fichier PHP
 			         			if(data == "ok"){
-			         					$(location).attr('href', '/projetTIC/creation-et-modif-syndicats.php');
+			         					$(location).attr('href', '/creation-et-modif-syndicats.php');
 			         				}
 			                }
 			            });
-		
+
 				});
 
 				 $('#formSyndic').on('submit', function(e) {
 			        e.preventDefault(); // J'empêche le comportement par défaut du navigateur, c-à-d de soumettre le formulaire
 			        $('#tbodySyndic').empty();
 			        var $this = $(this); // L'objet jQuery du formulaire
-			 	
+
 			            // Envoi de la requête HTTP en mode asynchrone
 			            $.ajax({
 			                url: $this.attr('action'), // Le nom du fichier indiqué dans le formulaire
@@ -404,11 +404,11 @@
 			                success: function(data,statut) { // Je récupère la réponse du fichier PHP
 			                	 console.log(data);
 			                     $.each(JSON.parse(data), function(key, val){
-								 
+
 				 					$('#tbodySyndic').append('<tr id='+val[0]+'><th>'+val[1]+'</th><th>'+val[2]+'</th></tr>');
-                             
+
                         			});
-							  		
+
 			                }
 			            });
 				});

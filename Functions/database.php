@@ -1,5 +1,7 @@
 <?php
-    require_once ($_SERVER["DOCUMENT_ROOT"]."/projetTIC/Includes/simplecms-config-sample.php");
+
+
+   require_once (dirname(__FILE__)."/../Includes/simplecms-config-sample.php");
 
     function prep_DB_content ()
     {
@@ -75,9 +77,9 @@
         $query_check_bail_exists = "SELECT * FROM louer";
         $statement_check_bail_exists = $databaseConnection->query($query_check_bail_exists);
 
-        
+
                 if( $statement_check_bail_exists->num_rows != 0)
-                {               
+                {
                             $query_show_bail = "SELECT l.ID,loc.nom, loc.prenom,loc.tel, loc.mail,c.nom,c.prenom,c.tel,c.mail, a.rue, a.codePostal,a.ville, DATE_FORMAT(l.dateDebut,'%m-%d-%Y'), DATE_FORMAT(l.dateFin,'%m-%d-%Y')
                                         FROM louer l, locataire loc,bien b, cautionnaire c, adresse a
                                         WHERE l.idLocataire = loc.ID and ((loc.idCautionnaire iS NULL) OR (c.ID = loc.idCautionnaire)) and l.idBien = b.ID and  b.idAdresse = a.ID";
@@ -101,21 +103,21 @@
                                  $query_show_bail .= " AND ";
                                  $query_show_bail .= "a.codePostal= '$codePostal'";
                             }
-            
-                    $statement_show_bail = $databaseConnection->query($query_show_bail); 
-  
+
+                    $statement_show_bail = $databaseConnection->query($query_show_bail);
+
                     return $statement_show_bail->fetch_all();
              }
 
     }
 
     function show_bien($databaseConnection,$nomProprietaire,$rue,$ville,$codePostal, $nbPieces, $nbChambres, $superficieMin, $superficieMax)
-    {  
+    {
         $query_check_bien_exists = "SELECT * FROM bien";
         $statement_check_bien_exists = $databaseConnection->query($query_check_bien_exists);
-        
+
                 if( $statement_check_bien_exists->num_rows != 0)
-                {               
+                {
                             $query_show_bien = "SELECT b.ID, b.superficie, b.nbPiece, b.nbChambre, p.nom, p.prenom, a.rue, a.codePostal, a.ville, s.nom
                                         FROM proprietaire p, bien b, adresse a, syndicat_copro s
                                         WHERE b.idProprietaire = p.ID AND b.idAdresse = a.ID";
@@ -153,20 +155,20 @@
                             }
 
                             $query_show_bien .= " GROUP BY b.ID";
-            
-                    $statement_show_biens = $databaseConnection->query($query_show_bien); 
+
+                    $statement_show_biens = $databaseConnection->query($query_show_bien);
                     return $statement_show_biens->fetch_all();
              }
 
     }
 
     function show_syndic($databaseConnection,$nomSyndic, $emailSyndic)
-    {  
+    {
         $query_check_syndic_exists = "SELECT * FROM syndicat_copro";
         $statement_check_syndic_exists = $databaseConnection->query($query_check_syndic_exists);
-        
+
                 if( $statement_check_syndic_exists->num_rows != 0)
-                {               
+                {
                             $query_show_syndic = "SELECT s.ID, s.nom, s.mail FROM syndicat_copro s";
                             if (!empty($nomSyndic)) {
                                  $query_show_syndic .= " WHERE ";
@@ -174,18 +176,18 @@
                             }
                              if (!empty($emailSyndic)) {
                                 if(!empty($nomSyndic)){
-                                    $query_show_syndic .= "AND "; 
+                                    $query_show_syndic .= "AND ";
                                 }
                                 else{
                                     $query_show_syndic .= " WHERE ";
                                 }
-                                 
+
                                 $query_show_syndic .= "s.mail = '$emailSyndic'";
                             }
 
                             $query_show_syndic .= " GROUP BY s.ID";
-            
-                    $statement_show_syndics = $databaseConnection->query($query_show_syndic); 
+
+                    $statement_show_syndics = $databaseConnection->query($query_show_syndic);
                     return $statement_show_syndics->fetch_all();
              }
 
@@ -199,10 +201,10 @@ function delete_bail($databaseConnection,$identifiant)
         $statement_check_bail_exists->bind_param('s', $identifiant);
         $statement_check_bail_exists->execute();
         $statement_check_bail_exists->store_result();
-        
+
                 if( $statement_check_bail_exists->num_rows != 0)
-                {               
-                    //selectionner le locataire dans louer 
+                {
+                    //selectionner le locataire dans louer
                     $query_id_locataire = "SELECT idLocataire FROM louer WHERE ID=".$identifiant;
                     $statement_id_locataire = $databaseConnection->query($query_id_locataire);
                     $row = $statement_id_locataire->fetch_row();
@@ -218,16 +220,16 @@ function delete_bail($databaseConnection,$identifiant)
                     $statement_id_adresse = $databaseConnection->query($query_id_adresse);
                     $row = $statement_id_adresse->fetch_row();
                     $idAdresse = $row[0];
-                    
+
                     //supression de l'adresse du cautionnaire
                     $query_delete_adresse_cautionnaire ="DELETE FROM adresse WHERE ID=".$idAdresse;
                     $databaseConnection->query($query_delete_adresse_cautionnaire);
 
                     $query_delete_cautionnaire = "DELETE FROM cautionnaire WHERE ID=".$idCautionnaire;
-                    $databaseConnection->query($query_delete_cautionnaire);   
+                    $databaseConnection->query($query_delete_cautionnaire);
 
                     $query_delete_louer = "DELETE FROM louer WHERE ID=".$identifiant;
-                    $databaseConnection->query($query_delete_louer); 
+                    $databaseConnection->query($query_delete_louer);
 
                     return "ok";
 
@@ -243,12 +245,12 @@ function delete_bail($databaseConnection,$identifiant)
         $statement_check_bien_exists->bind_param('s', $identifiant);
         $statement_check_bien_exists->execute();
         $statement_check_bien_exists->store_result();
-        
+
                 if( $statement_check_bien_exists->num_rows != 0)
-                {  
+                {
 
                     $query_delete_bien = "DELETE FROM bien WHERE ID=".$identifiant;
-                    $databaseConnection->query($query_delete_bien); 
+                    $databaseConnection->query($query_delete_bien);
 
                     return "ok";
                 }
@@ -262,12 +264,12 @@ function delete_bail($databaseConnection,$identifiant)
         $statement_check_syndic_exists->bind_param('s', $identifiant);
         $statement_check_syndic_exists->execute();
         $statement_check_syndic_exists->store_result();
-        
+
                 if( $statement_check_syndic_exists->num_rows != 0)
-                {  
+                {
 
                     $query_delete_syndic = "DELETE FROM syndicat_copro WHERE ID=".$identifiant;
-                    $databaseConnection->query($query_delete_syndic); 
+                    $databaseConnection->query($query_delete_syndic);
 
                     return "ok";
                 }
@@ -275,11 +277,11 @@ function delete_bail($databaseConnection,$identifiant)
     }
 
 function search_ensemble_bien($databaseConnection){
-        
+
         $query_check_bien_exists = "SELECT * FROM bien";
         $statement_check_bien_exists = $databaseConnection->query($query_check_bien_exists);
                 if( $statement_check_bien_exists->num_rows != 0)
-                {               
+                {
                     $query_search_bien = "SELECT * FROM bien b, adresse a WHERE  b.idAdresse = a.ID";
                     $statement_search_bien =$databaseConnection->query($query_search_bien);
                     return $statement_search_bien;
@@ -288,14 +290,14 @@ function search_ensemble_bien($databaseConnection){
 }
 
 function add_edit_baux($databaseConnection,$action,$nomLoc,$prenomLoc, $telLoc,$mailLoc,$dateDebutLoc,$dateFinLoc,$idBienLoc,$nomCaut,$prenomCaut,$telCaut,$mailCaut,$adrPrincipCaut,$adrComplCaut,$villeCaut,$codePostalCaut,$idSelected){
-    
+
     if($action == "insert"){
     //INSERT DANS LA TABLE ADRESSE - ADRESSE CAUTIONNAIRE
-    $query_insert_adresse = "INSERT INTO adresse(rue,complement,codePostal,ville) VALUES ('$adrPrincipCaut', '$adrComplCaut','$codePostalCaut','$villeCaut')"; 
+    $query_insert_adresse = "INSERT INTO adresse(rue,complement,codePostal,ville) VALUES ('$adrPrincipCaut', '$adrComplCaut','$codePostalCaut','$villeCaut')";
     $statement_insert_adresse = $databaseConnection->query($query_insert_adresse);
     $idAdresse = $databaseConnection->insert_id;
     //INSERT DANS LA TABLE CAUTIONNAIRE
-    $query_insert_cautionnaire = "INSERT INTO cautionnaire(nom,prenom,mail,tel,idAdresse) VALUES ('$nomCaut','$prenomCaut','$mailCaut','$telCaut','$idAdresse')";           
+    $query_insert_cautionnaire = "INSERT INTO cautionnaire(nom,prenom,mail,tel,idAdresse) VALUES ('$nomCaut','$prenomCaut','$mailCaut','$telCaut','$idAdresse')";
     $statement_insert_cautionnaire = $databaseConnection->query($query_insert_cautionnaire);
     $idCautionnaire = $databaseConnection->insert_id;
     //INSERT DANS LA TABLE LOCATAIRE
@@ -325,25 +327,25 @@ else if($action == "edition"){
     $query_id_adresse = "SELECT idAdresse FROM cautionnaire WHERE ID=".$idCautionnaire;
     $statement_id_adresse = $databaseConnection->query($query_id_adresse);
     $row = $statement_id_adresse->fetch_row();
-    $idAdresse = $row[0];  
+    $idAdresse = $row[0];
 
-    //Mettre à jour dans un premier temps l'adresse 
+    //Mettre à jour dans un premier temps l'adresse
     //rue,complement,codePostal,ville FROM adresse WHERE ID="
     $query_update_adresse="UPDATE adresse SET rue = '$adrPrincipCaut', complement = '$adrComplCaut', codePostal = '$codePostalCaut', ville = '$villeCaut' WHERE ID=".$idAdresse;
      $statement_update_adresse = $databaseConnection->query($query_update_adresse);
- 
-    //Mettre a jour la table cautionnaire 
+
+    //Mettre a jour la table cautionnaire
     $query_update_cautionnaire="UPDATE cautionnaire SET nom = '$nomCaut', prenom = '$prenomCaut', mail = '$mailCaut', tel = '$telCaut' WHERE ID=".$idCautionnaire;
      $statement_update_cautionnaire = $databaseConnection->query($query_update_cautionnaire);
-     //mettre à jour la table locataire 
+     //mettre à jour la table locataire
      $query_update_locataire="UPDATE locataire SET nom = '$nomLoc', prenom = '$prenomLoc', mail = '$mailLoc', tel = '$telLoc' WHERE ID=".$idLocataire;
      $statement_update_locataire = $databaseConnection->query($query_update_locataire);
      //mettre a jour la table louer
      $query_update_louer="UPDATE louer SET idBien = '$idBienLoc', dateDebut = '$dateDebutLoc', dateFin = '$dateFinLoc' WHERE ID=".$idSelected;
      $statement_update_louer = $databaseConnection->query($query_update_louer);
-     return  "ok"; 
+     return  "ok";
 }
-    
+
 
 }
 
@@ -385,7 +387,7 @@ function add_edit_biens($databaseConnection,$action,$superficieBien,$nbPiecesBie
     else if($action == "edition"){
         $query_id_bien = "UPDATE bien SET superficie = $superficieBien, nbPiece = '$nbPiecesBien', nbChambre = '$nbChambresBien', etage = '$etageBien', description = '$descriptionBien' where ID =".$idSelected;
         $statement_id_bien = $databaseConnection->query($query_id_bien);
-        
+
         $query_id_adresse_bien = "SELECT idAdresse from bien where ID = ".$idSelected;
         $statement_id_adresse_bien = $databaseConnection->query($query_id_adresse_bien);
         $row = $statement_id_adresse_bien->fetch_row();
@@ -425,7 +427,7 @@ function add_edit_syndics($databaseConnection,$action,$nomSyndic,$emailSyndic,$i
     }
 
     else if($action == "edition"){
-     
+
         $query_update_syndic = "UPDATE syndicat_copro set nom = '$nomSyndic', mail='$emailSyndic' where ID =".$idSelected;
         $statement_query_update_syndic = $databaseConnection->query($query_update_syndic);
 
@@ -440,13 +442,13 @@ function search_baux($databaseConnection,$identifiant){
         $statement_check_bail_exists->bind_param('s', $identifiant);
         $statement_check_bail_exists->execute();
         $statement_check_bail_exists->store_result();
-        
+
         //initialisaion de mon tableau qui va contenir toutes les données du formulaire
         $donnees_bail = array();
 
                 if( $statement_check_bail_exists->num_rows != 0)
-                {          
-                     //recuperer les donnees dans la table louer 
+                {
+                     //recuperer les donnees dans la table louer
                     $query_id_locataire = "SELECT idLocataire,idBien,dateDebut,dateFin FROM louer WHERE ID=".$identifiant;
                     $statement_id_locataire = $databaseConnection->query($query_id_locataire);
                     $row = $statement_id_locataire->fetch_row();
@@ -473,7 +475,7 @@ function search_baux($databaseConnection,$identifiant){
                     $query_id_adresse = "SELECT idAdresse,nom,prenom,mail,tel FROM cautionnaire WHERE ID=".$idCautionnaire;
                     $statement_id_adresse = $databaseConnection->query($query_id_adresse);
                     $row = $statement_id_adresse->fetch_row();
-                    $idAdresse = $row[0];  
+                    $idAdresse = $row[0];
 
                     //nom,prenom, mail & telephone du cautionnaire
                     $nomCautionnaire = $row[1];
@@ -504,13 +506,13 @@ function search_biens($databaseConnection,$identifiant){
         $statement_check_bien_exists->bind_param('s', $identifiant);
         $statement_check_bien_exists->execute();
         $statement_check_bien_exists->store_result();
-        
+
         //initialisaion de mon tableau qui va contenir toutes les données du formulaire
         $donnees_bien = array();
 
                 if( $statement_check_bien_exists->num_rows != 0)
-                {          
-                     //recuperer les donnees dans la table louer 
+                {
+                     //recuperer les donnees dans la table louer
                     $query_id_locataire = "SELECT ID,superficie, nbPiece, nbChambre, etage, description, idProprietaire, idAdresse FROM bien WHERE ID=".$identifiant;
                     $statement_id_locataire = $databaseConnection->query($query_id_locataire);
                     $row = $statement_id_locataire->fetch_row();
@@ -521,7 +523,7 @@ function search_biens($databaseConnection,$identifiant){
                     $description = json_encode($row[5]);
                     $idProprietaire = json_encode($row[6]);
                     $idAdresseB = json_encode($row[7]);
-                   
+
                     $query_adresse_bien = "SELECT rue, codePostal, ville, complement FROM adresse WHERE ID=".$idAdresseB;
                     $statement_adresse_bien = $databaseConnection->query($query_adresse_bien);
                     $row = $statement_adresse_bien->fetch_row();
@@ -563,19 +565,19 @@ function search_biens($databaseConnection,$identifiant){
         $statement_check_syndic_exists->bind_param('s', $identifiant);
         $statement_check_syndic_exists->execute();
         $statement_check_syndic_exists->store_result();
-        
+
         //initialisaion de mon tableau qui va contenir toutes les données du formulaire
         $donnees_syndic = array();
 
                 if( $statement_check_syndic_exists->num_rows != 0)
-                {          
-                     //recuperer les donnees dans la table louer 
+                {
+                     //recuperer les donnees dans la table louer
                     $query_syndic = "SELECT nom, mail FROM syndicat_copro WHERE ID=".$identifiant;
                     $statement_query_syndic = $databaseConnection->query($query_syndic);
                     $row = $statement_query_syndic->fetch_row();
                     $nomSyndic = json_encode($row[0]);
                     $emailSyndic = json_encode($row[1]);
-                
+
 
                     array_push($donnees_syndic, $nomSyndic, $emailSyndic);
 

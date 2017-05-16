@@ -1,7 +1,7 @@
 <?php
-require_once ("Includes/simplecms-config-sample.php");
-require_once  ("Includes/connectDB.php");
-include("Includes/header.php");
+require_once (dirname(__FILE__)."/Includes/simplecms-config-sample.php");
+require_once  (dirname(__FILE__)."/Includes/connectDB.php");
+include(dirname(__FILE__)."/Includes/header.php");
 ?>
 
 
@@ -59,7 +59,7 @@ include("Includes/header.php");
       </div>
     </form>
   </div>
-        
+
 <?php
 	include("Includes/footer.php")
 ?>

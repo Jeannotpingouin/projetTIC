@@ -1,10 +1,10 @@
-    <?php 
-        require_once ("Includes/simplecms-config-sample.php"); 
-        require_once  ("Includes/connectDB.php");
-        include("Includes/header.php");  
+    <?php
+        require_once (dirname(__FILE__)."/Includes/simplecms-config-sample.php");
+        require_once  (dirname(__FILE__)."/Includes/connectDB.php");
+        include(dirname(__FILE__)."/Includes/header.php");
 
 
-        if(logged_on())  {    
+        if(logged_on())  {
      ?>
 <div class="container">
     <h4>Gestion des syndics</h4> <br>
@@ -26,11 +26,11 @@
                         <input id="search_emailSyndic" type="text" class="validate" name="search_emailSyndic">
                         <label for="search_emailSyndic">Email syndic</label>
                     </div>
-                  
+
                     </div>
                    </td>
 
-                  
+
                    </tr>
                    </table>
                     <div class="row">
@@ -48,7 +48,7 @@
         <thead>
             <tr>
                 <th>Nom syndic</th>
-                <th>Email syndic</th>    
+                <th>Email syndic</th>
             </tr>
         </thead>
           <tbody id="tbodySyndic">
@@ -66,11 +66,11 @@
     </ul>
   </div>
 </div>
-   
-    
+
+
         <!-- Page Content goes here -->
 
-    <?php 
-    } 
+    <?php
+    }
         include ("Includes/footer.php");
      ?>

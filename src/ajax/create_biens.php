@@ -1,6 +1,6 @@
 <?php
-	require_once ($_SERVER["DOCUMENT_ROOT"]."/projetTIC/Includes/simplecms-config-sample.php"); 
-	require_once  ($_SERVER["DOCUMENT_ROOT"]."/projetTIC/Includes/connectDB.php");
+	require_once (dirname(__FILE__)."/../../Includes/simplecms-config-sample.php");
+	require_once  (dirname(__FILE__)."/../../Includes/connectDB.php");
 
 	/* Données du bien */
 
@@ -37,7 +37,7 @@
 			$action = "edition";
 			$idSelected = $actionForm;
 		}
-		
+
 	$addBiens = add_edit_biens($databaseConnection,$action,	$superficieBien,$nbPiecesBien,$nbChambresBien,$etageBien,$descriptionBien,$rueBien,$complementAdresseBien,$codePostalBien,$villeBien,$nomSyndicBien,$mailSyndicBien,$civilitePBien,$namePBien,$prenomPBien,$numTelPBien,$mailPBien,$ruePBien,$codePostalPBien,$villePBien,$complementAdressePBien,$idSelected);
 
 	echo $addBiens;

@@ -1,10 +1,10 @@
-    <?php 
-        require_once ("Includes/simplecms-config-sample.php"); 
-        require_once  ("Includes/connectDB.php");
-        include("Includes/header.php");  
+    <?php
+        require_once (dirname(__FILE__)."/Includes/simplecms-config-sample.php");
+        require_once  (dirname(__FILE__)."/Includes/connectDB.php");
+        include(dirname(__FILE__)."/Includes/header.php");
 
 
-        if(logged_on())  {    
+        if(logged_on())  {
      ?>
 <div class="container">
     <h4>Gestion des biens</h4> <br>
@@ -36,7 +36,7 @@
                             <input id="search_codePostal" type="text" class="validate" name="search_codePostal">
                             <label for="search_codePostal">Code Postal</label>
                         </div>
-                  
+
                     </div>
                    </td>
 
@@ -48,17 +48,17 @@
                         </div>
 
                          <div class="input-field col s12">
-              
+
                             <input id="search_codePostal" type="text" class="validate" name="search_nbP">
                             <label for="search_codePostal">Nombre pièces</label>
                         </div>
                         <div class="input-field col s12">
-              
+
                             <input id="search_codePostal" type="text" class="validate" name="search_supMin">
                             <label for="search_codePostal">Superficie min</label>
                         </div>
                         <div class="input-field col s12">
-              
+
                             <input id="search_codePostal" type="text" class="validate" name="search_supMax">
                             <label for="search_codePostal">Superficie max</label>
                         </div>
@@ -88,8 +88,8 @@
                 <th>Propriétaire</th>
                 <th>Rue</th>
                 <th>Code Postal</th>
-                <th>Ville</th>   
-                <th>Syndicat</th>     
+                <th>Ville</th>
+                <th>Syndicat</th>
             </tr>
         </thead>
           <tbody id="tbodyBien">
@@ -107,11 +107,11 @@
     </ul>
   </div>
 </div>
-   
-    
+
+
         <!-- Page Content goes here -->
 
-	<?php 
-	} 
+	<?php
+	}
 	    include ("Includes/footer.php");
 	 ?>

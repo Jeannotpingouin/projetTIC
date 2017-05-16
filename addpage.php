@@ -1,8 +1,8 @@
-<?php 
-    require_once ("Includes/session.php");
-    require_once ("Includes/simplecms-config.php"); 
+<?php
+    require ("Includes/session.php");
+    require_once ("Includes/simplecms-config.php");
     require_once ("Includes/connectDB.php");
-    include("Includes/header.php"); 
+    include("Includes/header.php");
     confirm_is_admin();
 
     if (isset($_POST['submit']))
@@ -39,7 +39,7 @@
             <legend>Add Page</legend>
             <ol>
                 <li>
-                    <label for="menulabel">Menu Label:</label> 
+                    <label for="menulabel">Menu Label:</label>
                     <input type="text" name="menulabel" value="" id="menulabel" />
                 </li>
                 <li>
@@ -56,5 +56,3 @@
 </div>
 </div> <!-- End of outer-wrapper which opens in header.php -->
 <?php include ("Includes/footer.php"); ?>
-
-

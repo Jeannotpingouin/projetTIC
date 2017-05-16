@@ -1,5 +1,5 @@
 <?php
-include ("closeDB.php");        
+include (dirname(__FILE__)."/closeDB.php");        
 ?>
 </main>
         <footer class="page-footer  teal ">
@@ -9,7 +9,7 @@ include ("closeDB.php");
                 <h5 class="white-text">Agence de location</h5>
                 <p class="grey-text text-lighten-4">Ce site est une application pour les agences de location.</p>
               </div>
- 
+
           </div>
           <div class="footer-copyright">
             <div class="container">
@@ -25,5 +25,3 @@ include ("closeDB.php");
 
     </body>
 </html>
-
-

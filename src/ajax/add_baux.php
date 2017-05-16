@@ -1,6 +1,6 @@
 <?php
-	require_once ($_SERVER["DOCUMENT_ROOT"]."/projetTIC/Includes/simplecms-config-sample.php"); 
-	require_once  ($_SERVER["DOCUMENT_ROOT"]."/projetTIC/Includes/connectDB.php");
+	require_once (dirname(__FILE__)."/../../Includes/simplecms-config-sample.php"); 
+	require_once  (dirname(__FILE__)."/../../Includes/connectDB.php");
 
 	//reception des données
 	$nomLocataire =  $databaseConnection->real_escape_string($_POST['add_edit_nomLocataire']);
@@ -24,7 +24,7 @@
 	$dateDebutLocataire = (date('Y-m-d',$dateDebutLocataire));
 	$dateFinLocataire = strtotime(str_replace(",","",$dateFinLocataire));
 	$dateFinLocataire = (date('Y-m-d',$dateFinLocataire));
-	
+
 	//la valeur action : ajouter ou edition
 	$action = NULL;
 		if($actionForm == "insert"){
@@ -35,7 +35,7 @@
 			$action = "edition";
 			$idSelected = $actionForm;
 		}
-		
+
 
 	$addBaux = add_edit_baux($databaseConnection,$action,$nomLocataire,$prenomLocataire,$telLocataire,$mailLocataire,
 		$dateDebutLocataire,$dateFinLocataire,$idBienLocataire,$nomCautionnaire,$prenomCautionnaire,$telCautionnaire,$mailCautionnaire,

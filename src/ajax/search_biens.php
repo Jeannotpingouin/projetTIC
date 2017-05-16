@@ -1,6 +1,6 @@
 <?php
-	require_once ($_SERVER["DOCUMENT_ROOT"]."/projetTIC/Includes/simplecms-config-sample.php"); 
-	require_once  ($_SERVER["DOCUMENT_ROOT"]."/projetTIC/Includes/connectDB.php");
+	require_once (dirname(__FILE__)."/../../Includes/simplecms-config-sample.php"); 
+	require_once  (dirname(__FILE__)."/../../Includes/connectDB.php");
 
 	$nomProprietaire = $databaseConnection->real_escape_string($_POST['search_nomProprietaire']);
 	$rue = $databaseConnection->real_escape_string($_POST['search_rue']);
@@ -13,7 +13,7 @@
 
 	$biens = show_bien($databaseConnection,$nomProprietaire,$rue,$ville,$codePostal, $nbPieces, $nbChambres, $superficieMin, $superficieMax);
 
-   	echo json_encode($biens); 
+   	echo json_encode($biens);
 
 
 ?>

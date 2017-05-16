@@ -1,7 +1,7 @@
 <?php
-require_once ("Includes/simplecms-config-sample.php");
-require_once  ("Includes/connectDB.php");
-include("Includes/header.php");
+require_once (dirname(__FILE__)."/Includes/simplecms-config-sample.php");
+require_once  (dirname(__FILE__)."/Includes/connectDB.php");
+include(dirname(__FILE__)."/Includes/header.php");
 if(logged_on())  {
 ?>
 <div class="container">
@@ -9,7 +9,7 @@ if(logged_on())  {
     <div class=row>
         <fieldset>
             <legend> Champs de recherche </legend>
-            <form  id="formBail" action="src/ajax/search_baux.php" method="POST">   
+            <form  id="formBail" action="src/ajax/search_baux.php" method="POST">
                 <div class="row">
                     <div class="input-field col s6">
                         <i class="material-icons prefix">account_circle</i>
@@ -49,7 +49,7 @@ if(logged_on())  {
             </form>
         </fieldset>
     </div>
-    
+
     <table class="responsive-table striped" id="tableBail">
         <thead>
             <tr>
@@ -62,9 +62,9 @@ if(logged_on())  {
                 <th>Adresse du Bien</th>
                 <th>Ville du Bien</th>
                 <th>Date du début du Bail</th>
-                <th>Date de fin du Bail</th>    
+                <th>Date de fin du Bail</th>
             </tr>
-        </thead> 
+        </thead>
         <tbody id="tbodyBail">
 
         </tbody>
