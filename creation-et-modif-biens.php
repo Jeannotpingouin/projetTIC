@@ -88,8 +88,11 @@
                 <th>Propriétaire</th>
                 <th>Rue</th>
                 <th>Code Postal</th>
+
                 <th>Ville</th>
-                <th>Syndicat</th>
+                <th>Nom syndic</th>
+                <th>Email syndic</th>
+
             </tr>
         </thead>
           <tbody id="tbodyBien">
